@@ -2,11 +2,14 @@ import { useEffect, useState } from "react"
 import { getPosts } from "../../managers/posts"
 import { getUsers } from "../../managers/users"
 import { getCategories } from "../../managers/categories"
+import { Link, useNavigate } from "react-router-dom"
 
 export const PostList = () => {
     const [posts, setPosts] = useState([])
     const [users, setUsers] = useState([])
     const [categories, setCategories] = useState([])
+    const navigate = useNavigate()
+
 
     useEffect(() => {
         getPosts().then(postsData => setPosts(postsData))
@@ -24,7 +27,9 @@ export const PostList = () => {
                         const category = categories.find(category => category.id === post.category_id) || []
                         return <section className="post">
                             <div>==============================</div>
-                            <div>Post Title: {post.title}</div>
+                            <div>Post Title: 
+                                <Link to={`/posts/${post.id}`} className="link">{post.title}</Link>
+                            </div>
                             <div>Author: {user.first_name} {user.last_name}</div>
                             <div>Category: {category.label}</div>
                         </section>
