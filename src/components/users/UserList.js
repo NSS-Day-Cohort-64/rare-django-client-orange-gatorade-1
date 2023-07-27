@@ -21,7 +21,6 @@ return(
                  <div className="userName">Username: {user.username}</div>
                   <div className="userfullName">Full Name: {user.first_name} {user.last_name}</div>
                   <div className="userEmail">Email: {user.email} </div>
-
                 </section>
               ))}
           </article>
