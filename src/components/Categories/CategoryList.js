@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { getCategories } from "../../managers/categories";
+import { CreateCategory } from "./CreateCategory";
 
 export const CategoryList = () => {
     const [categoryList, setList] = useState([]);
+    const [showForm, updateShowForm] = useState(false)
+
+  const updateCategories = () => {
+    getCategories()
+      .then((categoryList) => {
+        setList(categoryList);
+      })
+  }
 
     useEffect(() => {
         getCategories()
@@ -21,10 +29,11 @@ export const CategoryList = () => {
         return(<button> Edit</button>)
     }
     return (
-        <>
-          <h2 className="categoryList">List of Categories</h2>
+        <article className="is-flex is-justify-content-space-evenly">
+          
       
-          <article className="categories">
+          <section className="categories">
+            <h2 className="categoryList">List of Categories</h2>
             {categoryList
               .sort((a, b) => a.label.localeCompare(b.label)) 
               .map((list) => (
@@ -34,8 +43,21 @@ export const CategoryList = () => {
                   <footer>{editButton()}</footer>
                 </section>
               ))}
-          </article>
-        </>
+          </section>
+          <section className="createCategory">
+            
+          {
+            showForm
+              ? <CreateCategory
+                updateShowForm={updateShowForm}
+                categoryList={categoryList}
+                updateCategories={updateCategories} />
+              : <button className="showCreateCategory"
+                onClick={click => updateShowForm(!showForm)}
+              >Create New</button>
+          }
+          </section>
+        </article>
       );
       
 
