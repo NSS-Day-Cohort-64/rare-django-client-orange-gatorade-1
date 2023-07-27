@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getCategories } from "../../managers/categories"
-import DatePicker from 'react-datepicker'
-
 
 
 export const PostForm = ({ token }) => {
@@ -15,7 +13,7 @@ export const PostForm = ({ token }) => {
         user_id: 0,
         category_id: 0,
         title: "",
-        publication_date: "",
+        publication_date: new Date().toISOString().split('T')[0],
         image_url: "",
         content: "",
         approved: false
@@ -35,7 +33,7 @@ export const PostForm = ({ token }) => {
         event.preventDefault()
 
         const messageToSendToAPI = {
-            user_id: token.id,
+            user_id: parseInt(token),
             category_id: post.category_id,
             title: post.title,
             publication_date: post.publication_date,
@@ -53,8 +51,7 @@ export const PostForm = ({ token }) => {
         })
             .then(response => response.json())
             .then(() => {
-                navigate("/posts")
-                /* PUT IN THE LINK WHEN CHESNEY IS DONE. DON"T FORGET*/
+                navigate("/posts/:postId")
 
             })
 
@@ -100,7 +97,7 @@ export const PostForm = ({ token }) => {
                                 key={`categoryType--${category.id}`}
                                 value={category.id}
                             >
-                                {category.name}
+                                {category.label}
                             </option>
                         ))}
                     </select>
@@ -137,23 +134,7 @@ export const PostForm = ({ token }) => {
                         }} />
                 </div>
             </fieldset>
-            <fieldset>
-                <div className="form-group">
-                    <label htmlFor="dateCompleted">Publication Date:</label>
-                    <DatePicker
-                        id="dateCompleted"
-                        selected={post.publication_date}
-                        onChange={(date) => {
-                            const copy = { ...post };
-                            copy.publication_date = date;
-                            update(copy);
-                        }}
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="Today is the day"
-                    // Any additional props or configurations for DatePicker can be added here
-                    />
-                </div>
-            </fieldset>
+
             <button
                 onClick={
                     (clickEvent) => { handleSaveButtonClick(clickEvent) }
