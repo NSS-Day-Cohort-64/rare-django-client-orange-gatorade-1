@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { loginUser } from "../../managers/AuthManager"
 
@@ -26,7 +26,16 @@ export const Login = ({ setToken }) => {
       }
     })
   }
-
+  /*--------------------------------------------------------------------*/
+  // Autofill Username/Password by default streamline devolopment process 
+  useEffect(
+    () => {
+      username.current.value = "lameguy"
+      password.current.value = "passwd"
+    },
+    []
+  )
+  /*--------------------------------------------------------------------*/
   return (
     <section className="columns is-centered">
       <form className="column is-two-thirds" onSubmit={handleLogin}>
