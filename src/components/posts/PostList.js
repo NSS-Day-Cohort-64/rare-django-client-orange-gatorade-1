@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { getPosts } from "../../managers/posts"
 import { getUsers } from "../../managers/users"
 import { getCategories } from "../../managers/categories"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export const PostList = () => {
     const [posts, setPosts] = useState([])
@@ -28,7 +28,7 @@ export const PostList = () => {
                         return <section className="post">
                             <div>==============================</div>
                             <div>Post Title: 
-                                <Link to={`/posts/${post.id}`} className="navbar-item">{post.title}</Link>
+                                <Link to={`/posts/${post.id}`} className="link">{post.title}</Link>
                             </div>
                             <div>Author: {user.first_name} {user.last_name}</div>
                             <div>Category: {category.label}</div>
