@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom"
 import { Login } from "../components/auth/Login"
 import { Register } from "../components/auth/Register"
 import { TagList } from '../components/tag/TagList'
-
 import { Authorized } from "./Authorized"
 import { PostList } from "../components/posts/PostList"
 import { CategoryList } from "../components/Categories/CategoryList"
@@ -19,7 +18,7 @@ export const ApplicationViews = ({ token, setToken }) => {
         <Route path="/posts" element={<PostList />}  />
         <Route path="/categories" element={<CategoryList />}  />
         <Route path="/users" element={<UserList />}  />
-        
+
       </Route>
     </Routes>
   </>
