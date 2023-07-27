@@ -53,6 +53,7 @@ export const NavBar = ({ token, setToken }) => {
                   <>
                     <Link to="/register" className="button is-link">Register</Link>
                     <Link to="/login" className="button is-outlined">Login</Link>
+                    <Link to="/tags" className="button is-outlined">Tag Management</Link>
                   </>
               }
             </div>
