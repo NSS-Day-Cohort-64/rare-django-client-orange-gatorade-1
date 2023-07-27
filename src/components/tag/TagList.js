@@ -18,12 +18,16 @@ export const TagList = () => {
   }
 
   return (
-    <>
-        <div className="labels">
-          {
-            tags.map(tag => <Tag key={tag.id} tag={tag} />)
-          }
+    <div style={{ margin: "0rem 3rem" }}>
+        <h1>Tags</h1>
+
+        <div className="tags">
+            {
+            tags.map(tag => {
+                return <Tag label={tag.label} />
+            })
+            }
         </div>
-    </>
+    </div>
   )
 }
