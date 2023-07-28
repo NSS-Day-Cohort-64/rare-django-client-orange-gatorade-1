@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { getCategories } from "../../managers/categories";
 
 
 
+export const PostEdit = ({ token }) => {
 
-export const PostEdit = () => {
-
-
-    const [post, update] = useState({
+    const [categories, setCategories] = useState([])
+    
+    const [post, updatePost] = useState({
         user_id: 0,
         category_id: 0,
         title: "",
@@ -17,6 +18,7 @@ export const PostEdit = () => {
         approved: 0
 
     })
+
     const { postId } = useParams()
     const navigate = useNavigate()
 
@@ -27,6 +29,13 @@ export const PostEdit = () => {
                 updatePost(data)
             })
     }, [postId])
+
+    useEffect(() => {
+        getCategories()
+            .then((categoryList) => {
+                setCategories(categoryList);
+            });
+    }, []);
 
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
@@ -40,14 +49,16 @@ export const PostEdit = () => {
         })
             .then(response => response.json())
             .then(() => {
-                navigate("/posts")
+                navigate("/my_posts")
+                //Then they should be directed to that post's detail page with the updated information
+
             })
     }
 
 
     return (
         <form className="postForm">
-            <h2 className="postFormHeader">Create a Post</h2>
+            <h2 className="postFormHeader">Edit a Post</h2>
 
             <fieldset>
                 <div className="form-group">
@@ -61,7 +72,7 @@ export const PostEdit = () => {
                         onChange={(evt) => {
                             const copy = { ...post };
                             copy.title = evt.target.value;
-                            update(copy);
+                            updatePost(copy);
                         }}
                     />
                 </div>
@@ -74,7 +85,7 @@ export const PostEdit = () => {
                         onChange={(evt) => {
                             const copy = { ...post };
                             copy.category_id = parseInt(evt.target.value);
-                            update(copy);
+                            updatePost(copy);
                         }}
                         className="form-control"
                     >
@@ -102,7 +113,7 @@ export const PostEdit = () => {
                         onChange={(evt) => {
                             const copy = { ...post };
                             copy.image_url = evt.target.value;
-                            update(copy);
+                            updatePost(copy);
                         }}
                     />
                 </div>
@@ -118,7 +129,7 @@ export const PostEdit = () => {
                         onChange={(evt) => {
                             const copy = { ...post };
                             copy.content = evt.target.value;
-                            update(copy);
+                            updatePost(copy);
                         }}
                     />
                 </div>
@@ -128,10 +139,10 @@ export const PostEdit = () => {
                 onClick={(clickEvent) => { handleSaveButtonClick(clickEvent) }}
                 className="btn btn-primary"
             >
-                Submit
+                Save Changes yes
             </button>
-
-            {formError && <div className="alert alert-danger">Please fill in all of the required fields. You will not be approved until you do so. We don't mess around here.</div>}
         </form>
     );
 };
+
+
