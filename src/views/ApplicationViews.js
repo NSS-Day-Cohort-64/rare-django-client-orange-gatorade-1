@@ -30,9 +30,8 @@ export const ApplicationViews = ({ token, setToken }) => {
           <Route path=":userId" element={<UserDetail />} />
         </Route>
         <Route path="/postform" element={<PostForm token={token}/>}  />
-        <Route path="/my-posts/:postId/edit" element={ <PostEdit token={token} /> } />
-
-
+        <Route path="/my-posts/:postId/edit" element={<PostEdit />}  />
+ 
 
       </Route>
     </Routes>
