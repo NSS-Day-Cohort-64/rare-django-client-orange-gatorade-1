@@ -5,7 +5,7 @@ import { getCategories } from "../../managers/categories"
 
 export const UserPost = ({ token }) => {
   const [userPosts, setUserPosts] = useState([]); // Change 'posts' to 'userPosts'
-      const [categories, setCategories] = useState([])
+    const [categories, setCategories] = useState([])
 
 
   useEffect(() => {
