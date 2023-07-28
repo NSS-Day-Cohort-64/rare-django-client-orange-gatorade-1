@@ -31,7 +31,7 @@ export const PostDetails = () => {
             const category = categories.find(category => category.id === post.category_id)
             setPostCategory(category)
         }
-    }, [post])
+    }, [post, users, categories])
 
 
     return (

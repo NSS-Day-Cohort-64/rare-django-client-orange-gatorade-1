@@ -39,6 +39,9 @@ export const NavBar = ({ token, setToken }) => {
               <Link to="/categories" className="navbar-item">Category Management</Link>
               <Link to="/users" className="navbar-item">User Management</Link>
               <Link to="/tags" className="button is-outlined">Tag Management</Link>
+              <Link to="/postform" className="navbar-item">New Post</Link>
+
+
 
               </>
               :
@@ -60,6 +63,7 @@ export const NavBar = ({ token, setToken }) => {
                   <>
                     <Link to="/register" className="button is-link">Register</Link>
                     <Link to="/login" className="button is-outlined">Login</Link>
+
                   </>
               }
             </div>
