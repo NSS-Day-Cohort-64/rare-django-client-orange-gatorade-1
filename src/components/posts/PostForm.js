@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { getCategories } from "../../managers/categories"
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getCategories } from "../../managers/categories";
+import { useParams } from "react-router-dom";
 
 
 export const PostForm = ({ token }) => {
@@ -8,7 +9,10 @@ export const PostForm = ({ token }) => {
         TODO: Add the correct default properties to the
         initial state object
     */
-    const [categories, setCategories] = useState([])
+    const [categories, setCategories] = useState([]);
+    const [formError, setFormError] = useState(false);
+
+
     const [post, update] = useState({
         user_id: 0,
         category_id: 0,
@@ -16,22 +20,24 @@ export const PostForm = ({ token }) => {
         publication_date: new Date().toISOString().split('T')[0],
         image_url: "",
         content: "",
-        approved: false
-    })
+        approved: 0
+    });
 
     useEffect(() => {
         getCategories()
             .then((categoryList) => {
                 setCategories(categoryList);
-            })
-
+            });
     }, []);
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleSaveButtonClick = (event) => {
-        event.preventDefault()
-
+        event.preventDefault();
+        if (!post.title || post.category_id === 0 || !post.image_url || !post.content) {
+            setFormError(true);
+            return;
+        }
         const messageToSendToAPI = {
             user_id: parseInt(token),
             category_id: post.category_id,
@@ -39,9 +45,9 @@ export const PostForm = ({ token }) => {
             publication_date: post.publication_date,
             image_url: post.image_url,
             content: post.content,
-            approved: true
+            approved: 1
+        };
 
-        }
         fetch(`http://localhost:8088/posts`, {
             method: "POST",
             headers: {
@@ -50,12 +56,11 @@ export const PostForm = ({ token }) => {
             body: JSON.stringify(messageToSendToAPI)
         })
             .then(response => response.json())
-            .then(() => {
-                navigate("/posts/:postId")
-
-            })
-
-    }
+            .then((data) => {
+                const createdPostId = data.id
+                navigate(`/posts/${createdPostId}`);
+            });
+    };
 
     return (
         <form className="postForm">
@@ -71,12 +76,11 @@ export const PostForm = ({ token }) => {
                         placeholder="THINK OF A FUN TITLE"
                         value={post.title}
                         onChange={(evt) => {
-                            const copy = { ...post }
-                            copy.title = evt.target.value
-                            update(copy)
-
-
-                        }} />
+                            const copy = { ...post };
+                            copy.title = evt.target.value;
+                            update(copy);
+                        }}
+                    />
                 </div>
             </fieldset>
             <fieldset>
@@ -113,10 +117,11 @@ export const PostForm = ({ token }) => {
                         className="form-control"
                         value={post.image_url}
                         onChange={(evt) => {
-                            const copy = { ...post }
-                            copy.image_url = evt.target.value
-                            update(copy)
-                        }} />
+                            const copy = { ...post };
+                            copy.image_url = evt.target.value;
+                            update(copy);
+                        }}
+                    />
                 </div>
             </fieldset>
             <fieldset>
@@ -128,20 +133,22 @@ export const PostForm = ({ token }) => {
                         className="form-control"
                         value={post.content}
                         onChange={(evt) => {
-                            const copy = { ...post }
-                            copy.content = evt.target.value
-                            update(copy)
-                        }} />
+                            const copy = { ...post };
+                            copy.content = evt.target.value;
+                            update(copy);
+                        }}
+                    />
                 </div>
             </fieldset>
 
             <button
-                onClick={
-                    (clickEvent) => { handleSaveButtonClick(clickEvent) }
-                }
-                className="btn btn-primary">
+                onClick={(clickEvent) => { handleSaveButtonClick(clickEvent) }}
+                className="btn btn-primary"
+            >
                 Submit
             </button>
+
+            {formError && <div className="alert alert-danger">Please fill in all of the required fields. You will not be approved until you do so.</div>}
         </form>
-    )
-}
+    );
+};
