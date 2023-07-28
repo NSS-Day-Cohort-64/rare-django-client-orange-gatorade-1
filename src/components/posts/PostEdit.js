@@ -4,7 +4,6 @@ import { getCategories } from "../../managers/categories";
 import { getPostById, putPost } from "../../managers/posts";
 
 
-export const PostEdit = ({ token }) => {
 
 export const PostEdit = () => {
 
