@@ -9,6 +9,7 @@ import { PostDetails } from "../components/posts/PostDetails"
 import { CategoryList } from "../components/Categories/CategoryList"
 import { UserList } from "../components/users/UserList"
 import { PostForm } from "../components/posts/PostForm"
+import { PostEdit } from "../components/posts/PostEdit"
 import { UserDetail } from "../components/users/UserDetail"
 
 export const ApplicationViews = ({ token, setToken }) => {
@@ -29,6 +30,8 @@ export const ApplicationViews = ({ token, setToken }) => {
           <Route path=":userId" element={<UserDetail />} />
         </Route>
         <Route path="/postform" element={<PostForm token={token}/>}  />
+        <Route path="/my-posts/:postId/edit" element={ <PostEdit token={token} /> } />
+
 
 
       </Route>

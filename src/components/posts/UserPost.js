@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { viewUserPost, deletePost } from "../../managers/posts";
+import { viewUserPost } from "../../managers/posts";
 import { getCategories } from "../../managers/categories"
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 
 export const UserPost = ({ token }) => {
   const [userPosts, setUserPosts] = useState([]); // Change 'posts' to 'userPosts'
-    const [categories, setCategories] = useState([])
-
-
+  const [categories, setCategories] = useState([])
+  const navigate = useNavigate();
+  const {postId} = useParams()
   useEffect(() => {
     viewUserPost({ token }).then((postsData) => setUserPosts(postsData)); // Pass token as an object
     getCategories().then(categoriesData => setCategories(categoriesData))
@@ -32,8 +34,12 @@ export const UserPost = ({ token }) => {
   };
 
 
-  const editButton = () => {
-    return <button>Edit</button>;
+  const editButton = (post) => {
+    return (
+      <button onClick={() => {navigate(`/my-posts/:${post.id}/edit`)}}>
+        Edit
+      </button>
+    );
   };
 
   return (
@@ -48,7 +54,7 @@ export const UserPost = ({ token }) => {
               <div>Title: {post.title}</div>
               <div>Category: {category.label}</div>
               <footer>{deleteButton(post.id)}</footer>
-              <footer>{editButton()}</footer>
+              <footer>{editButton(post.id)}</footer>
             </section>
           );
         })}
