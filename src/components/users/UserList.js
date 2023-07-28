@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { getUsers } from "../../managers/users"
 import { useEffect, useState } from 'react';
 
@@ -19,7 +20,7 @@ return(
               .map((user) => (
                 <section className="user" key={user.id}>
                  <div className="userName">Username: {user.username}</div>
-                  <div className="userfullName">Full Name: {user.first_name} {user.last_name}</div>
+                  <div className="userfullName">Full Name: <Link to={`/users/${user.id}`}>{user.first_name} {user.last_name}</Link></div>
                   <div className="userEmail">Email: {user.email} </div>
                 </section>
               ))}

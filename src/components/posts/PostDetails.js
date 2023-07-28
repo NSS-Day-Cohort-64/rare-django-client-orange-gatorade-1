@@ -38,7 +38,7 @@ export const PostDetails = () => {
         <div style={{ margin: "0rem 3rem" }}>
             <h1>{post?.title}</h1>
             <article className="postDetails">
-                    <div>Author: {author?.first_name} {author?.last_name}</div>
+                <div>Author: <Link to={`/users/${author?.id}`}>{author?.first_name} {author?.last_name}</Link></div>
                     <div>Category: {postCategory?.label}</div>
                     <div>Date: {post?.publication_date}</div>
                     <img src={post?.image_url}/>
