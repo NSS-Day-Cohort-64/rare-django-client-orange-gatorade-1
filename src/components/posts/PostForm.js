@@ -148,7 +148,7 @@ export const PostForm = ({ token }) => {
                 Submit
             </button>
 
-            {formError && <div className="alert alert-danger">Please fill in all of the required fields. You will not be approved until you do so.</div>}
+            {formError && <div className="alert alert-danger">Please fill in all of the required fields. You will not be approved until you do so. We don't mess around here.</div>}
         </form>
     );
 };
