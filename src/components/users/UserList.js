@@ -1,5 +1,5 @@
 import { getUsers } from "../../managers/users"
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -25,11 +25,5 @@ return(
               ))}
           </article>
         </>
-      
-
-
 ) 
-
 }
-
-
