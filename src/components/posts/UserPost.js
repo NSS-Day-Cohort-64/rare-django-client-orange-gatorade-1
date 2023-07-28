@@ -32,8 +32,12 @@ export const UserPost = ({ token }) => {
   };
 
 
-  const editButton = () => {
-    return <button>Edit</button>;
+  const editButton = (post) => {
+    return (
+      <button onClick={() => {navigate(`/my-posts/:${post.id}/edit`)}}>
+        Edit
+      </button>
+    );
   };
 
   return (

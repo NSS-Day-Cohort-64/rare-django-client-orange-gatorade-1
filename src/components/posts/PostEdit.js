@@ -139,7 +139,7 @@ export const PostEdit = ({ token }) => {
                 onClick={(clickEvent) => { handleSaveButtonClick(clickEvent) }}
                 className="btn btn-primary"
             >
-                Save Changes yes
+                Save Changes
             </button>
         </form>
     );
