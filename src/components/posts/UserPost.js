@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { viewUserPost, deletePost } from "../../managers/posts";
+import { viewUserPost } from "../../managers/posts";
 import { getCategories } from "../../managers/categories"
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -8,6 +8,9 @@ export const UserPost = ({ token }) => {
   const [userPosts, setUserPosts] = useState([]); // Change 'posts' to 'userPosts'
     const [categories, setCategories] = useState([])
 const navigate = useNavigate()
+
+  
+  const {postId} = useParams()
 
   useEffect(() => {
     viewUserPost({ token }).then((postsData) => setUserPosts(postsData)); // Pass token as an object
@@ -41,6 +44,7 @@ const navigate = useNavigate()
     )
   }
 
+
   return (
     <div style={{ margin: "0rem 3rem" }}>
       <h1>My Posts</h1>
@@ -54,6 +58,7 @@ const navigate = useNavigate()
               <div>Category: {category.label}</div>
               <footer>{deleteButton(post.id)}</footer>
               <footer>{editButton(post)}</footer>
+
             </section>
           );
         })}

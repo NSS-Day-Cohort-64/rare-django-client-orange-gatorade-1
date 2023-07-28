@@ -4,7 +4,10 @@ import { getCategories } from "../../managers/categories";
 import { getPostById, putPost } from "../../managers/posts";
 
 
+export const PostEdit = ({ token }) => {
+
 export const PostEdit = () => {
+
 
     const [categories, setCategories] = useState([])
     
@@ -47,6 +50,7 @@ export const PostEdit = () => {
                 //Then they should be directed to that post's detail page with the updated information
 
             )
+
     }
 
 
