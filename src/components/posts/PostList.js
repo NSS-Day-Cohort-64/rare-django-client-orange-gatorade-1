@@ -129,7 +129,7 @@ export const PostList = () => {
                             <div>Post Title: 
                                 <Link to={`/posts/${post.id}`} className="link">{post.title}</Link>
                             </div>
-                            <div>Author: {user.first_name} {user.last_name}</div>
+                            <div>Author: <Link to={`/users/${user.id}`}>{user.first_name} {user.last_name}</Link></div>
                             <div>Category: {category.label}</div>
                         </section>
                     })
