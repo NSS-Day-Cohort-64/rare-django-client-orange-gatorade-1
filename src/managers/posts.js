@@ -26,6 +26,16 @@ export const deletePost = (postId) => {
     });
 };
 
+export const putPost = (postId, post) => {
+    return fetch(`http://localhost:8088/posts/${postId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(post)
+    }) 
+}
+
 export const getPostsByUser = (userId) => {
     return fetch(`http://localhost:8088/posts?user=${userId}`)
     .then(res => res.json())

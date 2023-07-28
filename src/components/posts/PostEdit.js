@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getCategories } from "../../managers/categories";
+import { getPostById, putPost } from "../../managers/posts";
 
 
 
-export const PostEdit = ({ token }) => {
+export const PostEdit = () => {
+
 
     const [categories, setCategories] = useState([])
     
@@ -23,11 +25,12 @@ export const PostEdit = ({ token }) => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetch(`http://localhost:8088/posts/${postId}`)
-            .then(response => response.json())
+        if (postId) 
+        
+            { getPostById(postId)    
             .then((data) => {
                 updatePost(data)
-            })
+            })}
     }, [postId])
 
     useEffect(() => {
@@ -40,19 +43,13 @@ export const PostEdit = ({ token }) => {
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
 
-        return fetch(`http://localhost:8088/posts/${post.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(post)
-        })
-            .then(response => response.json())
-            .then(() => {
-                navigate("/my_posts")
+        putPost(postId, post)
+            .then(() => 
+                navigate(`/posts/${postId}`)
                 //Then they should be directed to that post's detail page with the updated information
 
-            })
+            )
+
     }
 
 
@@ -144,3 +141,5 @@ export const PostEdit = ({ token }) => {
         </form>
     );
 };
+
+
