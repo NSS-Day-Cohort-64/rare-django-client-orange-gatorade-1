@@ -3,6 +3,8 @@ import { getPostById } from "../../managers/posts"
 import { useEffect, useState } from "react"
 import { getUsers } from "../../managers/users"
 import { getCategories } from "../../managers/categories"
+import { Link } from "react-router-dom"
+
 
 export const PostDetails = () => {
     const { postId } = useParams()
