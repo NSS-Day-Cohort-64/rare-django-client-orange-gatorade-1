@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { viewUserPost } from "../../managers/posts";
+import { deletePost, viewUserPost } from "../../managers/posts";
 import { getCategories } from "../../managers/categories"
 import { useNavigate, useParams } from "react-router-dom";
 
