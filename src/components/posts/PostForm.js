@@ -97,13 +97,6 @@ export const PostForm = ({ token }) => {
             updateTagsOnPost(copy)
         }
     }
-    useEffect(
-        () => {
-            const post_body = ["num", tagsOnPost]
-            console.log(post_body)
-        },
-        [tagsOnPost]
-    )
 
     return (
         <form className="postForm">
