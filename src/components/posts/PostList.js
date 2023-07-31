@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
-import { getPosts, getPostsByCategory, getPostsByTitle, getPostsByUser } from "../../managers/posts";
+import { getPosts, getPostsByCategory, getPostsByTag, getPostsByTitle, getPostsByUser } from "../../managers/posts";
 import { getUsers } from "../../managers/users";
 import { getCategories } from "../../managers/categories";
 import { Link } from "react-router-dom";
+import { getTags } from "../../managers/TagManager";
 
 export const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
   const [filters, setFilters] = useState({
     categoryId: 0,
     userId: 0,
     title: "",
+    tagId: 0
   });
   const [titleInput, setTitleInput] = useState(""); // New state to track the input field value
 
@@ -20,6 +23,8 @@ export const PostList = () => {
     getPosts().then((postsData) => setPosts(postsData));
     getUsers().then((usersData) => setUsers(usersData));
     getCategories().then((categoriesData) => setCategories(categoriesData));
+    getTags().then((tagData) => setTags(tagData));
+
   }, []);
 
   useEffect(() => {
@@ -47,6 +52,11 @@ export const PostList = () => {
       );
     }
 
+    if (filters.tagId !== 0) {
+        filteredResults = filteredResults.filter((post) =>
+          post?.tag?.id === filters.tagId
+        );
+      }
     setFilteredPosts(filteredResults);
   };
 
@@ -58,6 +68,11 @@ export const PostList = () => {
   const handleAuthorChange = (event) => {
     const userId = parseInt(event.target.value);
     setFilters({ ...filters, userId });
+  };
+
+  const handleTagChange = (event) => {
+    const tagId = parseInt(event.target.value);
+    setFilters({ ...filters, tagId });
   };
 
   const handleTitleChange = (event) => {
@@ -91,6 +106,15 @@ export const PostList = () => {
             </option>
           ))}
         </select>
+        <label htmlFor="tag">Tag: </label>
+        <select name="tag" className="form-control" onChange={handleTagChange}>
+          <option value={0}>Select a tag</option>
+          {tags.map((tag) => (
+            <option key={`tagFilter--${tag.id}`} value={tag.id}>
+              {tag.label}
+            </option>
+          ))}
+        </select>
         <div>
           <input type="text" value={titleInput} onChange={handleTitleChange} />
           <button onClick={handleTitleSubmit}>Search</button>
@@ -100,6 +124,7 @@ export const PostList = () => {
         {filteredPosts.map((post) => {
           const user = users.find((user) => user.id === post.user_id) || [];
           const category = categories.find((category) => category.id === post.category_id) || [];
+        const tag = tags.find((tag) => tag.id === post?.tag?.id) || []
           return (
             <section className="post" key={`postList--${post.id}`}>
               <div>==============================</div>
@@ -110,6 +135,7 @@ export const PostList = () => {
                 Author: <Link to={`/users/${user.id}`}>{user.first_name} {user.last_name}</Link>
               </div>
               <div>Category: {category.label}</div>
+              <div>Tag: {tag.label} </div>
             </section>
           );
         })}

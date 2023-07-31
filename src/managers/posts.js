@@ -1,3 +1,4 @@
+
 export const getPosts = () => {
     return fetch("http://localhost:8088/posts")
         .then(res => res.json())
@@ -45,3 +46,9 @@ export const getPostsByTitle = (title) => {
     return fetch(`http://localhost:8088/posts?title=${title}`)
     .then(res => res.json())
 }
+
+export const getPostsByTag = (tagId) => {
+    return fetch(`http://localhost:8088/posts?tag=${tagId}`)
+    .then(res => res.json())
+}
+
