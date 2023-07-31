@@ -40,3 +40,8 @@ export const getPostsByUser = (userId) => {
     return fetch(`http://localhost:8088/posts?user=${userId}`)
     .then(res => res.json())
 }
+
+export const getPostsByTitle = (title) => {
+    return fetch(`http://localhost:8088/posts?title=${title}`)
+    .then(res => res.json())
+}
