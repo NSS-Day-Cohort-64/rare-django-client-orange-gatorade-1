@@ -26,3 +26,20 @@ export const postTagRelationships = (postId, tagsToPost) => {
     body: JSON.stringify(postBody)
   }).then(res => res.json())
 }
+
+export const getPostTagsByPostId = (postId) => {
+  return fetch(`http://localhost:8088/post_tags?post=${postId}`)
+      .then(res => res.json())
+}
+
+export const deleteTagRelationships = (postTagIdArray) => {
+
+  return fetch("http://localhost:8088/post_tags+bulk_delete", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify(postTagIdArray)
+  }).then(res => res.json())
+}
