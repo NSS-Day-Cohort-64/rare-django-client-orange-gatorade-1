@@ -41,5 +41,5 @@ export const deleteTagRelationships = (postTagIdArray) => {
       "Accept": "application/json"
     },
     body: JSON.stringify(postTagIdArray)
-  }).then(res => res.json())
+  })
 }
