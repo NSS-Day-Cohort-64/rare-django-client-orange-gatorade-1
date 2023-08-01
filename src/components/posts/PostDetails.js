@@ -43,10 +43,10 @@ export const PostDetails = () => {
             <h1>{post?.title}</h1>
             <article className="postDetails">
                 <div>Author: <Link to={`/users/${author?.id}`}>{author?.first_name} {author?.last_name}</Link></div>
-                    <div>Category: {postCategory?.label}</div>
-                    <div>Date: {post?.publication_date}</div>
-                    <img src={post?.image_url}/>
-                    <div>{post?.content}</div>
+                <div>Category: {postCategory?.label}</div>
+                <div>Date: {post?.publication_date}</div>
+                <img src={post?.image_url} />
+                <div>{post?.content}</div>
             </article>
             <button onClick = {()=> {navigate(`/comments/${postId}`)}}>View Comments</button>
             <button onClick = {()=> {navigate(`/commentform/${postId}`)}}>Add Comment</button>

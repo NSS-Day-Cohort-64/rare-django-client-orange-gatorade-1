@@ -14,13 +14,15 @@ import { UserDetail } from "../components/users/UserDetail"
 import { PostComments } from "../components/comments/PostComments"
 import { CommentForm } from "../components/comments/CommentForm"
 
+import { SubscribedUserPosts } from "../components/subscriptions/ViewSubscribedUserPosts"
 
-export const ApplicationViews = ({ token, setToken }) => {
+export const ApplicationViews = ({ token, setToken}) => {
   return <>
     <Routes>
       <Route path="/login" element={<Login setToken={setToken} />}  />
       <Route path="/register" element={<Register setToken={setToken} />}  />
       <Route element={<Authorized token={token} />}>
+        <Route index element={<SubscribedUserPosts token={token} />} />
 
         <Route path="/tags" element={<TagList />}  />
         <Route path="/posts" element={<PostList />}  />

@@ -6,11 +6,9 @@ import { useNavigate, useParams } from "react-router-dom";
 
 export const UserPost = ({ token }) => {
   const [userPosts, setUserPosts] = useState([]); // Change 'posts' to 'userPosts'
-    const [categories, setCategories] = useState([])
-const navigate = useNavigate()
-
-  
-  const {postId} = useParams()
+  const [categories, setCategories] = useState([])
+  const navigate = useNavigate()
+  const { postId } = useParams()
 
   useEffect(() => {
     viewUserPost({ token }).then((postsData) => setUserPosts(postsData)); // Pass token as an object
@@ -38,7 +36,7 @@ const navigate = useNavigate()
 
   const editButton = (post) => {
     return (
-      <button onClick={() => {navigate(`/my-posts/${post.id}/edit`)}}>
+      <button onClick={() => { navigate(`/my-posts/${post.id}/edit`) }}>
         Edit
       </button>
     )

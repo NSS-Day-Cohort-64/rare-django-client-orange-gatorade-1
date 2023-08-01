@@ -12,15 +12,15 @@ export const getPostById = (id) => {
 
 export const getPostsByCategory = (categoryId) => {
     return fetch(`http://localhost:8088/posts?category=${categoryId}`)
-    .then(res => res.json())
+        .then(res => res.json())
 }
 
 
 
 export const viewUserPost = ({ token }) => {
-  const userId = parseInt(token);
-  return fetch(`http://localhost:8088/posts?user=${userId}`)
-    .then((res) => res.json());
+    const userId = parseInt(token);
+    return fetch(`http://localhost:8088/posts?user=${userId}`)
+        .then((res) => res.json());
 };
 
 export const deletePost = (postId) => {
@@ -36,12 +36,12 @@ export const putPost = (postId, post) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(post)
-    }) 
+    })
 }
 
 export const getPostsByUser = (userId) => {
     return fetch(`http://localhost:8088/posts?user=${userId}`)
-    .then(res => res.json())
+        .then(res => res.json())
 }
 
 export const getPostsByTitle = (title) => {
