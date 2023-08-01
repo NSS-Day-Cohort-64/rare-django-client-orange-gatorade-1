@@ -105,7 +105,14 @@ export const PostList = () => {
             </option>
           ))}
         </select>
+        
 
+        <div>
+          <input type="text" value={titleInput} onChange={handleTitleChange} />
+          <button onClick={handleTitleSubmit}>Search</button>
+        </div>
+      </div>
+            
         <label htmlFor="tag">Tag: </label>
         <select name="tag" className="form-control" onChange={handleTagChange}>
           <option value={0}>Select a tag</option>
@@ -115,12 +122,6 @@ export const PostList = () => {
             </option>
           ))}
         </select>
-
-        <div>
-          <input type="text" value={titleInput} onChange={handleTitleChange} />
-          <button onClick={handleTitleSubmit}>Search</button>
-        </div>
-      </div>
 
       <article className="posts">
         {filteredPosts.map((post) => {

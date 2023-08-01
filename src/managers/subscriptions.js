@@ -7,3 +7,8 @@ export const addSubscription = (subscription) => {
         body: JSON.stringify(subscription)
     })
 }
+
+export const getAllSubscriptions = () => {
+    return fetch("http://localhost:8088/subscriptions")
+        .then(res => res.json())
+}

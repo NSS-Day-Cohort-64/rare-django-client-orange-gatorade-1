@@ -19,6 +19,7 @@ export const UserList = () => {
           .sort((a, b) => a.username.localeCompare(b.username))
           .map((user) => (
             <section className="user" key={user.id}>
+              <div>================================================</div>
               <div className="userName">Username: {user.username}</div>
               <div className="userfullName">Full Name: <Link to={`/users/${user.id}`}>{user.first_name} {user.last_name}</Link></div>
               <div className="userEmail">Email: {user.email} </div>

@@ -14,3 +14,4 @@ export const postComment = (comment) => {
     })
         .then(response => response.json())
 }
+
