@@ -17,7 +17,8 @@ export const SubscribedUserPosts = ({token}) => {
         });
 
         const data = await response.json();
-        setSubscribedPosts(data);
+        const notMyPosts = data.filter((post) => post.author_id !== parseInt(token));
+        setSubscribedPosts(notMyPosts);
     }
 
     return (

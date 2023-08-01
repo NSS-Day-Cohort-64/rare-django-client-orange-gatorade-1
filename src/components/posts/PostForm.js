@@ -148,7 +148,7 @@ export const PostForm = ({ token }) => {
                 <div className="form-group">
                     <label htmlFor="imagePost" className="imagePost">Image:</label>
                     <input
-                        required autoFocus
+                        required 
                         type="text"
                         className="form-control"
                         value={post.image_url}
@@ -164,7 +164,7 @@ export const PostForm = ({ token }) => {
                 <div className="form-group">
                     <label htmlFor="content" className="contentPost">Content:</label>
                     <input
-                        required autoFocus
+                        required 
                         type="text"
                         className="form-control"
                         value={post.content}
