@@ -14,14 +14,18 @@ export const UserDetail = () => {
     }, [userId])
 
     const subscribeToUser = () => {
-        // const author_id = parseInt(user.id)
+        const follower_id = parseInt(localStorage.getItem("auth_token"))
 
         addSubscription({
-            follower_id: parseInt(localStorage.getItem("auth_token")),
+            follower_id: follower_id,
             author_id: parseInt(user.id),
             created_on: new Date().toISOString().split('T')[0]
         })
-            .then(() => navigate("/"))
+            .then(() => {
+                // Update the follower_id in localStorage after successful subscription
+                localStorage.setItem("follower_id", follower_id);
+                navigate("/");
+            })
     }
 
     return (

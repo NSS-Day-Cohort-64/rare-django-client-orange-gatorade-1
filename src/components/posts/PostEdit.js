@@ -7,8 +7,6 @@ import { deleteTagRelationships, getPostTagsByPostId, getTags, postTagRelationsh
 
 
 export const PostEdit = () => {
-
-
     const [categories, setCategories] = useState([])
 
     // Default state for all tags to list on form
@@ -20,7 +18,7 @@ export const PostEdit = () => {
     // Track state for tags being removed/added
     const [tagsToRemove, updateTagsToRemove] = useState([])
     const [tagsToAdd, updateTagsToAdd] = useState([])
-    
+
     const [post, updatePost] = useState({
         user_id: 0,
         category_id: 0,
@@ -36,12 +34,12 @@ export const PostEdit = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (postId) 
-        
-            { getPostById(postId)    
+        if (postId) {
+            getPostById(postId)
             .then((data) => {
                 updatePost(data)
-            })}
+            })
+        }
     }, [postId])
 
     useEffect(() => {

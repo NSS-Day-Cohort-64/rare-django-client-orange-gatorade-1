@@ -31,8 +31,8 @@ export const TagList = () => {
             {tags.map((tag) => (
                 <section className="tag" key={tag.id}>
                   <div className="tagLabel">{tag.label}</div>
-                  <footer>{deleteButton()}</footer>
-                  <footer>{editButton()}</footer>
+                  <footer>{deleteButton()}
+                  {editButton()}</footer>
                 </section>
               ))}
         </div>

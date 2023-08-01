@@ -2,7 +2,7 @@ import { useState } from "react"
 import { postCategories } from "../../managers/categories"
 
 export const CreateCategory = ({ updateShowForm, categoryList, updateCategories }) => {
-    const [newCategory, updateNewCategory] = useState({label: ""})
+    const [newCategory, updateNewCategory] = useState({ label: "" })
 
     const handleSubmitCategory = (e) => {
         e.preventDefault()
@@ -30,7 +30,7 @@ export const CreateCategory = ({ updateShowForm, categoryList, updateCategories 
     }
 
     return <>
-    <div className="addCategory">
+        <div className="addCategory">
             <label htmlFor="addCategory_input">Create New Category:</label>
             <div>
                 <input
@@ -49,14 +49,14 @@ export const CreateCategory = ({ updateShowForm, categoryList, updateCategories 
             </div>
         </div>
         <button className="btn-secondary btn-group-left"
-        onClick={(click) => handleSubmitCategory(click)}
+            onClick={(click) => handleSubmitCategory(click)}
         >Submit New Category</button>
 
         <button className="btn-secondary btn-group-right"
-        onClick={(e) => {
-            e.preventDefault()
-            updateShowForm(false)
-        }}
+            onClick={(e) => {
+                e.preventDefault()
+                updateShowForm(false)
+            }}
         >Hide</button>
         <div><p>After adding a new category, you'll be able to find it in the list to the left.</p></div>
     </>
