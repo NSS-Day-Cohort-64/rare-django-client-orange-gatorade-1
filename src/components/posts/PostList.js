@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getPosts, getPostsByCategory, getPostsByTag, getPostsByTitle, getPostsByUser } from "../../managers/posts";
 import { getUsers } from "../../managers/users";
 import { getCategories } from "../../managers/categories";
@@ -24,7 +24,6 @@ export const PostList = () => {
     getUsers().then((usersData) => setUsers(usersData));
     getCategories().then((categoriesData) => setCategories(categoriesData));
     getTags().then((tagData) => setTags(tagData));
-
   }, []);
 
   useEffect(() => {
@@ -48,15 +47,16 @@ export const PostList = () => {
 
     if (filters.title.trim() !== "") {
       filteredResults = filteredResults.filter((post) =>
-        post.title.toLowerCase().includes(filters.title.toLowerCase())
+        post.title.toLowerCase().includes(titleInput.toLowerCase())
       );
     }
 
     if (filters.tagId !== 0) {
-        filteredResults = filteredResults.filter((post) =>
-          post?.tag?.id === filters.tagId
-        );
-      }
+      filteredResults = filteredResults.filter((post) =>
+        post.tag?.id === filters.tagId
+      );
+    }
+
     setFilteredPosts(filteredResults);
   };
 
@@ -106,6 +106,7 @@ export const PostList = () => {
             </option>
           ))}
         </select>
+
         <label htmlFor="tag">Tag: </label>
         <select name="tag" className="form-control" onChange={handleTagChange}>
           <option value={0}>Select a tag</option>
@@ -115,16 +116,19 @@ export const PostList = () => {
             </option>
           ))}
         </select>
+
         <div>
           <input type="text" value={titleInput} onChange={handleTitleChange} />
           <button onClick={handleTitleSubmit}>Search</button>
         </div>
       </div>
+
       <article className="posts">
         {filteredPosts.map((post) => {
           const user = users.find((user) => user.id === post.user_id) || [];
           const category = categories.find((category) => category.id === post.category_id) || [];
-        const tag = tags.find((tag) => tag.id === post?.tag?.id) || []
+          const tag = tags.find((tag) => tag.id === post?.tag?.id) || [];
+
           return (
             <section className="post" key={`postList--${post.id}`}>
               <div>==============================</div>
@@ -135,7 +139,7 @@ export const PostList = () => {
                 Author: <Link to={`/users/${user.id}`}>{user.first_name} {user.last_name}</Link>
               </div>
               <div>Category: {category.label}</div>
-              <div>Tag: {tag.label} </div>
+              <div>Tag: {tag.label}</div>
             </section>
           );
         })}
@@ -143,4 +147,3 @@ export const PostList = () => {
     </div>
   );
 };
-
