@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCategories } from "../../managers/categories";
-import { useParams } from "react-router-dom";
+import { getTags, postTagRelationships } from "../../managers/TagManager";
 
 
 export const PostForm = ({ token }) => {
@@ -11,6 +11,11 @@ export const PostForm = ({ token }) => {
     */
     const [categories, setCategories] = useState([]);
     const [formError, setFormError] = useState(false);
+
+    // Default state for all tags to list on form
+    const [tagList, setTagList] = useState([])
+    // Track state for tags being added to post
+    const [tagsOnPost, updateTagsOnPost] = useState([])
 
 
     const [post, update] = useState({
@@ -29,6 +34,14 @@ export const PostForm = ({ token }) => {
                 setCategories(categoryList);
             });
     }, []);
+
+    useEffect(
+        () => {
+            getTags()
+                .then(tagData => setTagList(tagData))
+        },
+        []
+    )
 
     const navigate = useNavigate();
 
@@ -58,9 +71,32 @@ export const PostForm = ({ token }) => {
             .then(response => response.json())
             .then((data) => {
                 const createdPostId = data.id
-                navigate(`/posts/${createdPostId}`);
+                console.log("New Post", data)
+                // If tags were selected, create the post/tag relationships with the new post id
+                if (tagsOnPost.length > 0) {
+                    postTagRelationships(createdPostId, tagsOnPost)
+                        .then((postedTags) => {
+                            console.log("New tags on post", postedTags)
+                            navigate(`/posts/${createdPostId}`)
+                        })
+                } else {
+                    navigate(`/posts/${createdPostId}`);
+                }
             });
     };
+
+    const addOrRemoveTag = (e) => {
+        const checkedTagId = parseInt(e.target.value)
+        console.log("checkedTagId", checkedTagId)
+        if (tagsOnPost.includes(checkedTagId)) {
+            const updatedTags = tagsOnPost.filter(tagId => tagId !== checkedTagId)
+            updateTagsOnPost(updatedTags)
+        } else {
+            const copy = [ ...tagsOnPost ]
+            copy.push(checkedTagId)
+            updateTagsOnPost(copy)
+        }
+    }
 
     return (
         <form className="postForm">
@@ -139,6 +175,28 @@ export const PostForm = ({ token }) => {
                         }}
                     />
                 </div>
+            </fieldset>
+
+            <fieldset>
+                <h3 className="is-size-5 has-text-weight-bold mt-3">Add Tags to Your Post</h3>
+                <section className="py-2 px-4">
+                {
+                    tagList.length > 0 &&
+                    tagList.map((tag) => {
+                        return <div key={`tagCheck--${tag.id}`}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    value={tag.id}
+                                    checked={tagsOnPost.includes(tag.id)}
+                                    onChange={(e) => addOrRemoveTag(e)}
+                                />
+                                {tag.label}
+                            </label>
+                        </div>
+                    })
+                }
+                </section>
             </fieldset>
 
             <button
