@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { getPostById } from "../../managers/posts"
 import { useEffect, useState } from "react"
 import { getUsers } from "../../managers/users"
@@ -36,6 +36,7 @@ export const PostDetails = () => {
     }, [post, users, categories])
 
 
+
     return (
         <div style={{ margin: "0rem 3rem" }}>
             <h1>{post?.title}</h1>
@@ -46,6 +47,7 @@ export const PostDetails = () => {
                     <img src={post?.image_url}/>
                     <div>{post?.content}</div>
             </article>
+            <Link to={`/comments/${postId}`}>View Comments</Link>
         </div>
     )
 }
