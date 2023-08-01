@@ -38,6 +38,7 @@ export const PostList = () => {
         (post) => post.category_id === filters.categoryId
       );
     }
+ 
 
     if (filters.userId !== 0) {
       filteredResults = filteredResults.filter(
@@ -52,9 +53,7 @@ export const PostList = () => {
     }
 
     if (filters.tagId !== 0) {
-      filteredResults = filteredResults.filter((post) =>
-        post.tag?.id === filters.tagId
-      );
+      getPostsByTag(filters.tagId).then((posts) => setFilteredPosts(posts))
     }
 
     setFilteredPosts(filteredResults);
@@ -71,7 +70,7 @@ export const PostList = () => {
   };
 
   const handleTagChange = (event) => {
-    const tagId = parseInt(event.target.value);
+    const tagId = parseInt(event.target.value)
     setFilters({ ...filters, tagId });
   };
 
@@ -127,7 +126,7 @@ export const PostList = () => {
         {filteredPosts.map((post) => {
           const user = users.find((user) => user.id === post.user_id) || [];
           const category = categories.find((category) => category.id === post.category_id) || [];
-          const tag = tags.find((tag) => tag.id === post?.tag?.id) || [];
+
 
           return (
             <section className="post" key={`postList--${post.id}`}>
@@ -139,7 +138,6 @@ export const PostList = () => {
                 Author: <Link to={`/users/${user.id}`}>{user.first_name} {user.last_name}</Link>
               </div>
               <div>Category: {category.label}</div>
-              <div>Tag: {tag.label}</div>
             </section>
           );
         })}
