@@ -149,27 +149,6 @@ export const PostEdit = () => {
         }
     }
 
-    useEffect(
-        () => {
-            console.log("tagsOnPost", tagsOnPost)
-        },
-        [tagsOnPost]
-    )
-
-    useEffect(
-        () => {
-            console.log("tagsToAdd", tagsToAdd)
-        },
-        [tagsToAdd]
-    )
-
-    useEffect(
-        () => {
-            console.log("tagsToRemove", tagsToRemove)
-        },
-        [tagsToRemove]
-    )
-
 
     return (
         <form className="postForm">
