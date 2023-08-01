@@ -6,10 +6,8 @@ import { getPostById, putPost } from "../../managers/posts";
 
 
 export const PostEdit = () => {
-
-
     const [categories, setCategories] = useState([])
-    
+
     const [post, updatePost] = useState({
         user_id: 0,
         category_id: 0,
@@ -25,12 +23,12 @@ export const PostEdit = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (postId) 
-        
-            { getPostById(postId)    
+        if (postId) {
+            getPostById(postId)
             .then((data) => {
                 updatePost(data)
-            })}
+            })
+        }
     }, [postId])
 
     useEffect(() => {
@@ -44,7 +42,7 @@ export const PostEdit = () => {
         event.preventDefault()
 
         putPost(postId, post)
-            .then(() => 
+            .then(() =>
                 navigate(`/posts/${postId}`)
                 //Then they should be directed to that post's detail page with the updated information
 

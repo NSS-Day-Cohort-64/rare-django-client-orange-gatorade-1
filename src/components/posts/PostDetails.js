@@ -8,11 +8,11 @@ import { Link } from "react-router-dom"
 
 export const PostDetails = () => {
     const { postId } = useParams()
-    const [ post, setPost ] = useState({})
-    const [ users, setUsers ] = useState([])
-    const [ categories, setCategories ] = useState([])
-    const [ author, setAuthor ] = useState({})
-    const [ postCategory, setPostCategory ] = useState({})
+    const [post, setPost] = useState({})
+    const [users, setUsers] = useState([])
+    const [categories, setCategories] = useState([])
+    const [author, setAuthor] = useState({})
+    const [postCategory, setPostCategory] = useState({})
 
     useEffect(() => {
         getUsers().then(usersData => setUsers(usersData))
@@ -41,10 +41,10 @@ export const PostDetails = () => {
             <h1>{post?.title}</h1>
             <article className="postDetails">
                 <div>Author: <Link to={`/users/${author?.id}`}>{author?.first_name} {author?.last_name}</Link></div>
-                    <div>Category: {postCategory?.label}</div>
-                    <div>Date: {post?.publication_date}</div>
-                    <img src={post?.image_url}/>
-                    <div>{post?.content}</div>
+                <div>Category: {postCategory?.label}</div>
+                <div>Date: {post?.publication_date}</div>
+                <img src={post?.image_url} />
+                <div>{post?.content}</div>
             </article>
         </div>
     )
