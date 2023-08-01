@@ -11,6 +11,9 @@ import { UserList } from "../components/users/UserList"
 import { PostForm } from "../components/posts/PostForm"
 import { PostEdit } from "../components/posts/PostEdit"
 import { UserDetail } from "../components/users/UserDetail"
+import { PostComments } from "../components/comments/PostComments"
+import { CommentForm } from "../components/comments/CommentForm"
+
 
 export const ApplicationViews = ({ token, setToken }) => {
   return <>
@@ -24,6 +27,8 @@ export const ApplicationViews = ({ token, setToken }) => {
         <Route path="/my-posts" element={<UserPost token={token}/>}  />
         <Route path="/posts/:postId" element={<PostDetails />}  />
         <Route path="/categories" element={<CategoryList />}  />
+        <Route path="/comments/:postId" element={<PostComments />}  />
+        <Route path="/commentform/:postId" element={<CommentForm token={token}/>}  />
         
         <Route path="/users"> 
           <Route index element={<UserList />} />

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { getPostById } from "../../managers/posts"
 import { useEffect, useState } from "react"
 import { getUsers } from "../../managers/users"
@@ -13,6 +13,7 @@ export const PostDetails = () => {
     const [ categories, setCategories ] = useState([])
     const [ author, setAuthor ] = useState({})
     const [ postCategory, setPostCategory ] = useState({})
+    const navigate = useNavigate()
 
     useEffect(() => {
         getUsers().then(usersData => setUsers(usersData))
@@ -36,6 +37,7 @@ export const PostDetails = () => {
     }, [post, users, categories])
 
 
+
     return (
         <div style={{ margin: "0rem 3rem" }}>
             <h1>{post?.title}</h1>
@@ -46,6 +48,8 @@ export const PostDetails = () => {
                     <img src={post?.image_url}/>
                     <div>{post?.content}</div>
             </article>
+            <button onClick = {()=> {navigate(`/comments/${postId}`)}}>View Comments</button>
+            <button onClick = {()=> {navigate(`/commentform/${postId}`)}}>Add Comment</button>
         </div>
     )
 }
