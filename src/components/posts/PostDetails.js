@@ -13,6 +13,7 @@ export const PostDetails = () => {
     const [ categories, setCategories ] = useState([])
     const [ author, setAuthor ] = useState({})
     const [ postCategory, setPostCategory ] = useState({})
+    const navigate = useNavigate()
 
     useEffect(() => {
         getUsers().then(usersData => setUsers(usersData))
@@ -47,7 +48,8 @@ export const PostDetails = () => {
                     <img src={post?.image_url}/>
                     <div>{post?.content}</div>
             </article>
-            <Link to={`/comments/${postId}`}>View Comments</Link>
+            <button onClick = {()=> {navigate(`/comments/${postId}`)}}>View Comments</button>
+            <button onClick = {()=> {navigate(`/commentform/${postId}`)}}>Add Comment</button>
         </div>
     )
 }

@@ -31,6 +31,7 @@ export const PostComments = () => {
                 </section>
                 })
             }
+            <button onClick = {()=> {navigate(`/commentform/${postId}`)}}>Add Comment</button>
 
         </div>
     )
