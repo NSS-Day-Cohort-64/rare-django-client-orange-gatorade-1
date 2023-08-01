@@ -39,8 +39,8 @@ export const CategoryList = () => {
           .map((list) => (
             <section className="category" key={list.id}>
               <div className="categoryName">{list.label}</div>
-              <footer>{deleteButton()}</footer>
-              <footer>{editButton()}</footer>
+              <footer>{deleteButton()}
+              {editButton()}</footer>
             </section>
           ))}
       </section>

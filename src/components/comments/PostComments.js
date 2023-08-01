@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { getCommentsByPost } from "../../managers/comments"
 import { getPostById } from "../../managers/posts"
 
-export const PostComments = () => {
+export const PostComments = ({ token }) => {
     const { postId } = useParams()
     const [ comments, setComments ] = useState([])
     const [post, setPost] = useState({})
@@ -17,6 +17,22 @@ export const PostComments = () => {
         }
     }, [postId])
 
+    const deleteButton = (comment) => {
+        return (
+          <button
+            onClick={() => {
+              fetch(`http://localhost:8088/comments/${comment.id}`, {
+                method: "DELETE"
+              }).then(() => {
+                getCommentsByPost(postId).then(foundComments => setComments(foundComments));
+              });
+            }}
+            className="submission__delete small-button"
+          >
+            Delete
+          </button>
+        );
+      }
 
 
     return (
@@ -28,6 +44,10 @@ export const PostComments = () => {
                     <div>==============================</div>
                     <div>Comment: {comment.content}</div>
                     <div>User: {comment.user.first_name} {comment.user.last_name}</div>
+                    {comment.author_id === parseInt(token) ? (
+                        deleteButton(comment)
+                    )
+                    : (<div></div>)}
                 </section>
                 })
             }
@@ -35,5 +55,6 @@ export const PostComments = () => {
 
         </div>
     )
+
 
 }

@@ -27,6 +27,7 @@ export const SubscribedUserPosts = ({token}) => {
                 <ul>
                     {subscribedPosts.map((post) => (
                         <li key={post.id}>
+                            <div>===================================================</div>
                             <p>Author: {post.author_username}</p>
                             <img
                                 className="author__postIMG"

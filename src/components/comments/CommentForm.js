@@ -44,6 +44,7 @@ export const CommentForm = ({ token }) => {
                     <label htmlFor="commentHTML" className="commentContent">Comment:</label>
                     <input
                         required autoFocus
+                        style={{ width: "30rem", height: "3rem" }}
                         type="text"
                         className="form-control"
                         placeholder="Tell us what you really think"
