@@ -24,7 +24,7 @@ export const UserDetail = ({ token }) => {
         const alreadySubscribed = subscriptions.find(s => s.follower_id === parseInt(token) && s.author_id === user.id)
         setSubscribed(alreadySubscribed)
         }
-    }, [subscriptions, userId])
+    }, [subscriptions, user])
 
 
     const subscribeToUser = () => {
