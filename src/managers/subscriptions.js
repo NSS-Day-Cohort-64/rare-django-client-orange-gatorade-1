@@ -12,3 +12,9 @@ export const getAllSubscriptions = () => {
     return fetch("http://localhost:8088/subscriptions")
         .then(res => res.json())
 }
+
+export const deleteSubscription = (subscriptionId) => {
+    return fetch(`http://localhost:8088/subscriptions/${subscriptionId}`, {
+        method: "DELETE"
+    })
+}
