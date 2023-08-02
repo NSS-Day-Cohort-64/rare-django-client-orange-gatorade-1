@@ -17,8 +17,16 @@ export const SubscribedUserPosts = ({token}) => {
         });
 
         const data = await response.json();
-        const notMyPosts = data.filter((post) => post.author_id !== parseInt(token));
-        setSubscribedPosts(notMyPosts);
+        // Check if response is array
+        if (Array.isArray(data)) {
+            const notMyPosts = data.filter((post) => post.author_id !== parseInt(token));
+            setSubscribedPosts(notMyPosts);
+        }
+        // Check if response is object with message
+        if (data.message) {
+            setSubscribedPosts(data)
+        }
+        
     }
 
     return (
