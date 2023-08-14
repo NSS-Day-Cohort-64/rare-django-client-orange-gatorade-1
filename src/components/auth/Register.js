@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { registerUser } from "../../managers/AuthManager"
@@ -11,7 +11,7 @@ export const Register = ({ setToken }) => {
   const bio = useRef()
   const password = useRef()
   const verifyPassword = useRef()
-  const passwordDialog = useRef()
+  const [showPasswordDialog, setShowDialog] = useState(false)
   const navigate = useNavigate()
 
   const handleRegister = (e) => {
@@ -36,7 +36,7 @@ export const Register = ({ setToken }) => {
           }
         })
     } else {
-      passwordDialog.current.showModal()
+      setShowDialog(true)
     }
   }
 
@@ -89,6 +89,13 @@ export const Register = ({ setToken }) => {
             </div>
           </div>
         </div>
+
+        {
+          showPasswordDialog &&
+          <div className="has-text-danger">
+            Password fields must be matching
+          </div>
+        }
 
         <div className="field">
           <label className="label">Bio</label>
