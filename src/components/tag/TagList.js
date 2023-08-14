@@ -2,16 +2,16 @@ import { useState, useEffect } from "react"
 import { getTags } from "../../managers/TagManager"
 import { CreateTag } from "./CreateTag"
 
-export const TagList = () => {
+export const TagList = ({token}) => {
   const [tags, setTags] = useState([])
   const [showForm, updateShowForm] = useState(false)
 
   const updateTags = () => {
-    getTags().then(tagData => setTags(tagData))
+    getTags(token).then(tagData => setTags(tagData))
   }
 
   useEffect(() => {
-      getTags().then(tagData => setTags(tagData))
+      getTags(token).then(tagData => setTags(tagData))
   }, [])
 
     const deleteButton = () => {
@@ -42,6 +42,7 @@ export const TagList = () => {
           {
             showForm
               ? <CreateTag
+                token={token}
                 updateShowForm={updateShowForm}
                 tagList={tags}
                 updateTags={updateTags} />

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { postTags } from "../../managers/TagManager"
 
-export const CreateTag = ({ updateShowForm, tagList, updateTags }) => {
+export const CreateTag = ({ token, updateShowForm, tagList, updateTags }) => {
     const [newTag, updateNewTag] = useState({label: ""})
 
     const handleSubmitTag = (e) => {
@@ -12,7 +12,7 @@ export const CreateTag = ({ updateShowForm, tagList, updateTags }) => {
 
         if (!alreadyAdded && newTag.label.length > 0) {
             // POST tag to API ////////////////////////////////////////////
-            postTags(newTag)
+            postTags(token, newTag)
                 .then(postedTag => {
                     console.log("New tag successfully created", postedTag)
                     // update the tagList state with new posted tag
