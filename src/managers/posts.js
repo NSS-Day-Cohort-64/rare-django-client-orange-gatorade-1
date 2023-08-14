@@ -5,8 +5,15 @@ export const getPosts = () => {
 }
 
 
-export const getPostById = (id) => {
-    return fetch(`http://localhost:8088/posts/${id}`)
+export const getPostById = (token, id) => {
+    return fetch(`http://localhost:8088/posts/${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": `Token ${token}`
+        }
+    })
         .then(res => res.json())
 }
 

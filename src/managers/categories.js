@@ -1,5 +1,5 @@
 export const getCategories = (token) => {
-    return fetch("http://localhost:8088/categories", {
+    return fetch("http://localhost:8000/categories", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -11,7 +11,7 @@ export const getCategories = (token) => {
 }
 
 export const postCategories = (newCategory) => {
-    return fetch("http://localhost:8088/categories", {
+    return fetch("http://localhost:8000/categories", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

@@ -6,7 +6,7 @@ import { getCategories } from "../../managers/categories"
 import { Link } from "react-router-dom"
 
 
-export const PostDetails = () => {
+export const PostDetails = ({token}) => {
     const { postId } = useParams()
     const [ post, setPost ] = useState({})
     const [ users, setUsers ] = useState([])
@@ -23,7 +23,7 @@ export const PostDetails = () => {
 
     useEffect(() => {
         if (postId) {
-            getPostById(postId).then(PostDetails => setPost(PostDetails))
+            getPostById(token, postId).then(PostDetails => setPost(PostDetails))
         }
     }, [postId])
 
