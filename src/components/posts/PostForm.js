@@ -29,7 +29,7 @@ export const PostForm = ({ token }) => {
     });
 
     useEffect(() => {
-        getCategories()
+        getCategories(token)
             .then((categoryList) => {
                 setCategories(categoryList);
             });

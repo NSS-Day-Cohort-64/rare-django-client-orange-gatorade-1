@@ -1,5 +1,12 @@
-export const getCategories = () => {
-    return fetch("http://localhost:8088/categories")
+export const getCategories = (token) => {
+    return fetch("http://localhost:8088/categories", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": `Token ${token}`
+        }
+    })
         .then(res => res.json())
 }
 
