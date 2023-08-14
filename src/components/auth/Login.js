@@ -30,8 +30,8 @@ export const Login = ({ setToken }) => {
   // Autofill Username/Password by default streamline devolopment process 
   useEffect(
     () => {
-      username.current.value = "lameguy"
-      password.current.value = "passwd"
+      username.current.value = "meg@ducharme.com"
+      password.current.value = "ducharme"
     },
     []
   )
