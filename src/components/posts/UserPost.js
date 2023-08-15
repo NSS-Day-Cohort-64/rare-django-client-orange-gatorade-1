@@ -6,13 +6,11 @@ import { useNavigate, useParams } from "react-router-dom";
 
 export const UserPost = ({ token }) => {
   const [userPosts, setUserPosts] = useState([]); // Change 'posts' to 'userPosts'
-  const [categories, setCategories] = useState([])
   const navigate = useNavigate()
   const { postId } = useParams()
 
   useEffect(() => {
     viewUserPost({ token }).then((postsData) => setUserPosts(postsData)); // Pass token as an object
-    getCategories().then(categoriesData => setCategories(categoriesData))
   }, [token]);
 
 
@@ -48,15 +46,14 @@ export const UserPost = ({ token }) => {
       <h1>My Posts</h1>
       <article className="posts">
         {userPosts.map((post) => {
-          const category = categories.find((category) => category.id === post.category_id) || {};
           return (
             <section className="post" key={post.id}>
               <div>==============================</div>
               <div>Title: {post.title}</div>
-              <div>Category: {category.label}</div>
+              <div>Author: {post.author.username}</div>
+              <div>Category: {post.category.label}</div>
               <footer>{deleteButton(post.id)}</footer>
               <footer>{editButton(post)}</footer>
-
             </section>
           );
         })}
