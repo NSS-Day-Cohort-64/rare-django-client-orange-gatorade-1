@@ -48,12 +48,11 @@ export const UserPost = ({ token }) => {
       <h1>My Posts</h1>
       <article className="posts">
         {userPosts.map((post) => {
-          const category = categories.find((category) => category.id === post.category_id) || {};
           return (
             <section className="post" key={post.id}>
               <div>==============================</div>
               <div>Title: {post.title}</div>
-              <div>Category: {category.label}</div>
+              <div>Category: {post.category.label}</div>
               <footer>{deleteButton(post.id)}</footer>
               <footer>{editButton(post)}</footer>
 
