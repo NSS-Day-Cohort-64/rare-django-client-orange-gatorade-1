@@ -24,7 +24,7 @@ export const ApplicationViews = ({ token, setToken}) => {
       <Route element={<Authorized token={token} />}>
         <Route index element={<SubscribedUserPosts token={token} />} />
 
-        <Route path="/tags" element={<TagList />}  />
+        <Route path="/tags" element={<TagList token={token} />}  />
         <Route path="/posts" element={<PostList />}  />
         <Route path="/my-posts" element={<UserPost token={token}/>}  />
         <Route path="/posts/:postId" element={<PostDetails />}  />
