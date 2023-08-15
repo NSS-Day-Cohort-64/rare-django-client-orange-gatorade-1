@@ -7,7 +7,7 @@ export const getPosts = () => {
 };
 
 export const getPostById = (token, id) => {
-  return fetch(`http://localhost:8088/posts/${id}`, {
+  return fetch(`http://localhost:8000/posts/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
