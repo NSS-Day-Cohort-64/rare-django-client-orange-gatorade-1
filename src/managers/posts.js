@@ -1,16 +1,28 @@
 export const getPosts = () => {
-    return fetch("http://localhost:8000/posts")
+    return fetch("http://localhost:8000/posts", {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("auth_token")}`
+        }
+    })
         .then(res => res.json())
 }
 
 
 export const getPostById = (id) => {
-    return fetch(`http://localhost:8000/posts/${id}`)
+    return fetch(`http://localhost:8000/posts/${id}`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("auth_token")}`
+        }
+    })
         .then(res => res.json())
 }
 
 export const getPostsByCategory = (categoryId) => {
-    return fetch(`http://localhost:8000/posts?category=${categoryId}`)
+    return fetch(`http://localhost:8000/posts?category=${categoryId}`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("auth_token")}`
+        }
+    })
         .then(res => res.json())
 }
 
@@ -48,10 +60,10 @@ export const getPostsByUser = (userId) => {
 
 export const getPostsByTitle = (title) => {
     return fetch(`http://localhost:8000/posts?title=${title}`)
-    .then(res => res.json())
+        .then(res => res.json())
 }
 
 export const getPostsByTag = (tagId) => {
     return fetch(`http://localhost:8000/posts?tag=${tagId}`)
-    .then(res => res.json())
+        .then(res => res.json())
 }
