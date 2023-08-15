@@ -65,7 +65,10 @@ export const getPostsByTitle = (title) => {
 };
 
 export const getPostsByTag = (tagId) => {
-  return fetch(`http://localhost:8000/posts?tag=${tagId}`).then((res) =>
-    res.json()
-  );
-};
+    return fetch(`http://localhost:8000/posts?tag=${tagId}`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("auth_token")}`
+        }
+    })
+        .then(res => res.json())
+}
