@@ -17,7 +17,7 @@ export const getPostsByCategory = (categoryId) => {
 
 
 export const viewUserPost = ({ token }) => {
-    return fetch(`http://localhost:8000/posts?user=${token}`, {
+    return fetch(`http://localhost:8000/posts?user=true`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("auth_token")}`
         }
@@ -55,4 +55,3 @@ export const getPostsByTag = (tagId) => {
     return fetch(`http://localhost:8000/posts?tag=${tagId}`)
     .then(res => res.json())
 }
-
