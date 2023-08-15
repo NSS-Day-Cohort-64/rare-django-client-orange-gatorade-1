@@ -21,17 +21,12 @@ export const getPostById = (id) => {
 }
 
 export const getPostsByCategory = (categoryId) => {
-    return fetch(`http://localhost:8000/posts?category=${categoryId}`, {
-        headers: {
-            "Authorization": `Token ${localStorage.getItem("auth_token")}`
-        }
-    })
+    return fetch(`http://localhost:8000/posts?category=${categoryId}`)
         .then(res => res.json())
 }
 
 
-
-export const viewUserPost = ({ token }) => {
+export const viewUserPost = () => {
     return fetch(`http://localhost:8000/posts?user=true`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("auth_token")}`
@@ -43,9 +38,7 @@ export const viewUserPost = ({ token }) => {
 export const deletePost = (postId) => {
     return fetch(`http://localhost:8000/posts/${postId}`, {
         method: "DELETE",
-        headers: {
-            "Authorization": `Token ${localStorage.getItem("auth_token")}`
-        }
+        "Authorization": `Token ${localStorage.getItem("auth_token")}`
     });
 };
 
@@ -53,23 +46,36 @@ export const putPost = (postId, post) => {
     return fetch(`http://localhost:8000/posts/${postId}`, {
         method: "PUT",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Token ${localStorage.getItem("auth_token")}`
         },
         body: JSON.stringify(post)
     })
 }
 
 export const getPostsByUser = (userId) => {
-    return fetch(`http://localhost:8000/posts?user=${userId}`)
+    return fetch(`http://localhost:8000/posts?user=${userId}`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("auth_token")}`
+        }
+    })
         .then(res => res.json())
 }
 
 export const getPostsByTitle = (title) => {
-    return fetch(`http://localhost:8000/posts?title=${title}`)
+    return fetch(`http://localhost:8000/posts?title=${title}`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("auth_token")}`
+        }
+    })
         .then(res => res.json())
 }
 
 export const getPostsByTag = (tagId) => {
-    return fetch(`http://localhost:8000/posts?tag=${tagId}`)
+    return fetch(`http://localhost:8000/posts?tag=${tagId}`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("auth_token")}`
+        }
+    })
         .then(res => res.json())
 }

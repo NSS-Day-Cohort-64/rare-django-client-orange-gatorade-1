@@ -26,8 +26,8 @@ export const PostEdit = () => {
         publication_date: new Date().toISOString().split('T')[0],
         image_url: "",
         content: "",
-        approved: 0
-
+        approved: 0,
+        tag: []
     })
 
     const { postId } = useParams()
@@ -36,9 +36,9 @@ export const PostEdit = () => {
     useEffect(() => {
         if (postId) {
             getPostById(postId)
-            .then((data) => {
-                updatePost(data)
-            })
+                .then((data) => {
+                    updatePost(data)
+                })
         }
     }, [postId])
 
@@ -57,25 +57,22 @@ export const PostEdit = () => {
         []
     )
 
-    useEffect(
-        () => {
-            if (postId) {
-                getPostTagsByPostId(postId)
-                .then((data) => {
-                    updateTagsOnPost(data)
-                    setOriginalPostTags(data)
-                })
-            }
-        },
-        [postId]
-    )
+    useEffect(() => {
+        if (post && post.tags && tagList) {
+            const data = tagList.filter(tag => post.tags.some(postTag => postTag.id === tag.id))
+            updateTagsOnPost(data)
+            setOriginalPostTags(data)
+        }
+    }, [post, tagList])
+
+
 
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
         // Format tags to add/delete for API
-        const addTagsArray = tagsToAdd.map(t => t.tag_id)
+        const addTagsArray = tagsToAdd.map(t => t.id)
         const removeTagsArray = tagsToRemove.map(t => t.id)
-        
+
         putPost(postId, post)
             .then(() => {
                 if (tagsToAdd.length > 0) {
@@ -93,42 +90,42 @@ export const PostEdit = () => {
                 navigate(`/posts/${postId}`)
                 //Then they should be directed to that post's detail page with the updated information
             })
-        
+
     }
 
     const handleEditTags = (e) => {
         const checkedTagId = parseInt(e.target.value)
         console.log("checkedTagId", checkedTagId)
-        const alreadyAdded = tagsToAdd.some(t => t.tag_id === checkedTagId)
-        const alreadyDeleted = tagsToRemove.some(t => t.tag_id === checkedTagId)
-        const currentlyOnPost = tagsOnPost.some(t => t.tag_id === checkedTagId)
-        const originallyOnPost = originalPostTags.some(t => t.tag_id === checkedTagId)
+        const alreadyAdded = tagsToAdd.some(t => t.id === checkedTagId)
+        const alreadyDeleted = tagsToRemove.some(t => t.id === checkedTagId)
+        const currentlyOnPost = tagsOnPost.some(t => t.id === checkedTagId)
+        const originallyOnPost = originalPostTags.some(t => t.id === checkedTagId)
 
         if (currentlyOnPost) {
             // Find tag to remove
-            const tagToRemove = tagsOnPost.find(t => t.tag_id === checkedTagId)
+            const tagToRemove = tagsOnPost.find(t => t.id === checkedTagId)
             // Update tagsOnPost
-            const updatedTags = tagsOnPost.filter(t => t.tag_id !== checkedTagId)
+            const updatedTags = tagsOnPost.filter(t => t.id !== checkedTagId)
             updateTagsOnPost(updatedTags)
             // Stage the post_tag for deletion
             if (originallyOnPost) {
-                const copy = [ ...tagsToRemove ]
+                const copy = [...tagsToRemove]
                 copy.push(tagToRemove)
                 updateTagsToRemove(copy)
             }
             if (alreadyAdded) {
                 // Remove tag from add list
-                const updatedTags = tagsToAdd.filter(t => t.tag_id !== checkedTagId)
+                const updatedTags = tagsToAdd.filter(t => t.id !== checkedTagId)
                 updateTagsToAdd(updatedTags)
             }
         } else { // if not currently on post
             if (alreadyDeleted) {
                 // Find tag to undo delete
-                const tagToUndoDelete = tagsToRemove.find(t => t.tag_id === checkedTagId)
-                const updatedTags = tagsToRemove.filter(t => t.tag_id !== checkedTagId)
+                const tagToUndoDelete = tagsToRemove.find(t => t.id === checkedTagId)
+                const updatedTags = tagsToRemove.filter(t => t.id !== checkedTagId)
                 updateTagsToRemove(updatedTags)
                 // Add tag back to tagsOnPost
-                const copy = [ ...tagsOnPost ]
+                const copy = [...tagsOnPost]
                 copy.push(tagToUndoDelete)
                 updateTagsOnPost(copy)
             } else {
@@ -138,11 +135,11 @@ export const PostEdit = () => {
                     post_id: postId,
                     tag_id: checkedTagId
                 }
-                const tagsOnPostCopy = [ ...tagsOnPost ]
+                const tagsOnPostCopy = [...tagsOnPost]
                 tagsOnPostCopy.push(newPostTag)
                 updateTagsOnPost(tagsOnPostCopy)
                 // stage the tag relationship to be added
-                const addedCopy = [ ...tagsToAdd ]
+                const addedCopy = [...tagsToAdd]
                 addedCopy.push(newPostTag)
                 updateTagsToAdd(addedCopy)
             }
@@ -232,22 +229,22 @@ export const PostEdit = () => {
             <fieldset>
                 <h3 className="is-size-5 has-text-weight-bold mt-3">Add Tags to Your Post</h3>
                 <section className="py-2 px-4">
-                {
-                    tagList.length > 0 &&
-                    tagList.map((tag) => {
-                        return <div key={`tagEditCheck--${tag.id}`}>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    value={tag.id}
-                                    checked={tagsOnPost.some(t => t.tag_id === tag.id)}
-                                    onChange={(e) => handleEditTags(e)}
-                                />
-                                {tag.label}
-                            </label>
-                        </div>
-                    })
-                }
+                    {
+                        tagList.length > 0 &&
+                        tagList.map((tag) => {
+                            return <div key={`tagEditCheck--${tag.id}`}>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        value={tag.id}
+                                        checked={tagsOnPost.some(t => t.id === tag.id)}
+                                        onChange={(e) => handleEditTags(e)}
+                                    />
+                                    {tag.label}
+                                </label>
+                            </div>
+                        })
+                    }
                 </section>
             </fieldset>
 
