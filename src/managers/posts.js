@@ -36,6 +36,9 @@ export const viewUserPost = ({ token }) => {
 export const deletePost = (postId) => {
   return fetch(`http://localhost:8000/posts/${postId}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Token ${localStorage.getItem("auth_token")}`,
+    },
   });
 };
 
