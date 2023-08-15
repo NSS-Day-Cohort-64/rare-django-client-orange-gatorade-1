@@ -12,20 +12,16 @@ export const EditCategory = ({ categoryId, updateShowEditForm, categoryList, upd
     }, [])
 
 
-    const handleSubmitCategory = (e) => {
+    const handleSubmitCategory = async (e) => {
         e.preventDefault()
 
         // Check if the category is already in database
         const alreadyAdded = categoryList.some(existingCategory => existingCategory.label === category.label)
 
         if (!alreadyAdded && category.label.length > 0) {
-            editCategory(category)
-                .then(updateCategories())
-                .catch(error => {
-                    console.error("An error occurred:", error);
-                    window.alert("Something went wrong");
-                })
-                .then(updateShowEditForm(false))
+            await editCategory(category)
+            updateCategories()
+            updateShowEditForm(0)
         } else if (alreadyAdded) {
             window.alert("Category already in database")
         } else {
@@ -42,7 +38,7 @@ export const EditCategory = ({ categoryId, updateShowEditForm, categoryList, upd
                     className="category__input"
                     placeholder="Enter your category"
                     id="addCategory_input"
-                    value={category.label}
+                    defaultValue={category.label}
                     onChange={
                         (changeEvent) => {
                             const copy = { ...category }
@@ -59,7 +55,7 @@ export const EditCategory = ({ categoryId, updateShowEditForm, categoryList, upd
         <button className="btn-secondary btn-group-right"
             onClick={(e) => {
                 e.preventDefault()
-                updateShowEditForm(false)
+                updateShowEditForm(0)
             }}
         >Cancel</button>
     </>
