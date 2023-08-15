@@ -27,9 +27,9 @@ export const PostList = () => {
 
   useEffect(() => {
     getPosts().then((postsData) => setPosts(postsData));
-    getUsers().then((usersData) => setUsers(usersData));
-    getCategories().then((categoriesData) => setCategories(categoriesData));
-    getTags().then((tagData) => setTags(tagData));
+    // getUsers().then((usersData) => setUsers(usersData));
+    // getCategories().then((categoriesData) => setCategories(categoriesData));
+    //getTags().then((tagData) => setTags(tagData));
   }, []);
 
   useEffect(() => {
@@ -136,10 +136,10 @@ export const PostList = () => {
 
       <article className="posts">
         {filteredPosts.map((post) => {
-          const user = users.find((user) => user.id === post.user_id) || [];
-          const category =
-            categories.find((category) => category.id === post.category_id) ||
-            [];
+          //const user = users.find((user) => user.id === post.user_id) || [];
+          //const category =
+          // categories.find((category) => category.id === post.category_id) ||
+          //  [];
 
           return (
             <section className="post" key={`postList--${post.id}`}>
@@ -149,11 +149,11 @@ export const PostList = () => {
               </div>
               <div>
                 Author:{" "}
-                <Link to={`/users/${user.id}`}>
-                  {user.first_name} {user.last_name}
+                <Link to={`/users/${post.author?.id}`}>
+                  {post.author?.username}
                 </Link>
               </div>
-              <div>Category: {category.label}</div>
+              <div>Category: {post.category.label}</div>
             </section>
           );
         })}
