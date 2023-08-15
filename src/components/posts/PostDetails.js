@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
 
-export const PostDetails = () => {
+export const PostDetails = ({token}) => {
     const { postId } = useParams()
     const [post, setPost] = useState({})
     const navigate = useNavigate()

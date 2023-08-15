@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCategories } from "../../managers/categories";
-import { getTags, postTagRelationships } from "../../managers/TagManager";
+import { getTags } from "../../managers/TagManager";
 
 
 export const PostForm = ({ token }) => {
@@ -19,13 +19,10 @@ export const PostForm = ({ token }) => {
 
 
     const [post, update] = useState({
-        user_id: 0,
         category_id: 0,
         title: "",
-        publication_date: new Date().toISOString().split('T')[0],
         image_url: "",
-        content: "",
-        approved: 0
+        content: ""
     });
 
     useEffect(() => {
@@ -37,7 +34,7 @@ export const PostForm = ({ token }) => {
 
     useEffect(
         () => {
-            getTags()
+            getTags(token)
                 .then(tagData => setTagList(tagData))
         },
         []
@@ -51,37 +48,27 @@ export const PostForm = ({ token }) => {
             setFormError(true);
             return;
         }
-        const messageToSendToAPI = {
-            user_id: parseInt(token),
-            category_id: post.category_id,
+        const postBody = {
+            category: post.category_id,
             title: post.title,
-            publication_date: post.publication_date,
             image_url: post.image_url,
             content: post.content,
-            approved: 1
+            tags: tagsOnPost
         };
 
-        fetch(`http://localhost:8088/posts`, {
+        fetch(`http://localhost:8000/posts`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Token ${token}`
             },
-            body: JSON.stringify(messageToSendToAPI)
+            body: JSON.stringify(postBody)
         })
             .then(response => response.json())
             .then((data) => {
                 const createdPostId = data.id
                 console.log("New Post", data)
-                // If tags were selected, create the post/tag relationships with the new post id
-                if (tagsOnPost.length > 0) {
-                    postTagRelationships(createdPostId, tagsOnPost)
-                        .then((postedTags) => {
-                            console.log("New tags on post", postedTags)
-                            navigate(`/posts/${createdPostId}`)
-                        })
-                } else {
-                    navigate(`/posts/${createdPostId}`);
-                }
+                navigate(`/posts/${createdPostId}`)
             });
     };
 
