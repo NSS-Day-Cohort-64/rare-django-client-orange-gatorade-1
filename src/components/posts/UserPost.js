@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { deletePost, viewUserPost } from "../../managers/posts";
-import { getCategories } from "../../managers/categories";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 export const UserPost = ({ token }) => {
@@ -9,7 +8,7 @@ export const UserPost = ({ token }) => {
   const { postId } = useParams();
 
   useEffect(() => {
-    viewUserPost({ token }).then((postsData) => setUserPosts(postsData)); // Pass token as an object
+    viewUserPost().then((postsData) => setUserPosts(postsData)); // Pass token as an object
   }, [token]);
 
   const deleteButton = (postId) => {
