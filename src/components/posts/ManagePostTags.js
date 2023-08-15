@@ -64,7 +64,6 @@ export const ManagePostTags = ({ token, postId, currentPost, originalTagsOnPost,
 
     const addOrRemoveTag = (e) => {
         const checkedTagId = parseInt(e.target.value)
-        console.log("checkedTagId", checkedTagId)
         if (tagsOnPost.includes(checkedTagId)) {
             const updatedTags = tagsOnPost.filter(tagId => tagId !== checkedTagId)
             updateTagsOnPost(updatedTags)
