@@ -25,7 +25,7 @@ export const getPostsByCategory = (categoryId) => {
   }).then((res) => res.json());
 };
 
-export const viewUserPost = ({ token }) => {
+export const viewUserPost = () => {
   return fetch(`http://localhost:8000/posts?user=true`, {
     headers: {
       Authorization: `Token ${localStorage.getItem("auth_token")}`,
