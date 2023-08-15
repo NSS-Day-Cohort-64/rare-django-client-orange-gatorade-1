@@ -1,22 +1,22 @@
-export const getTags = (token) => {
+export const getTags = () => {
   return fetch("http://localhost:8000/tags", {
     method: "GET",
     headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": `Token ${token}`
+        "Authorization": `Token ${localStorage.getItem("auth_token")}`
     }
 })
       .then(res => res.json())
 }
 
-export const postTags = (token, newTag) => {
+export const postTags = (newTag) => {
   return fetch("http://localhost:8000/tags", {
       method: "POST",
       headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
-          "Authorization": `Token ${token}`
+          "Authorization": `Token ${localStorage.getItem("auth_token")}`
       },
       body: JSON.stringify(newTag)
   }).then(res => res.json())
@@ -29,14 +29,19 @@ export const postTagRelationships = (postId, tagsToPost) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json"
+      "Accept": "application/json",
+      "Authorization": `Token ${localStorage.getItem("auth_token")}`
     },
     body: JSON.stringify(postBody)
   }).then(res => res.json())
 }
 
 export const getPostTagsByPostId = (postId) => {
-  return fetch(`http://localhost:8000/post_tags?post=${postId}`)
+  return fetch(`http://localhost:8000/post_tags?post=${postId}`, {
+    headers: {
+        "Authorization": `Token ${localStorage.getItem("auth_token")}`
+    }
+})
       .then(res => res.json())
 }
 
@@ -46,7 +51,8 @@ export const deleteTagRelationships = (postTagIdArray) => {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json"
+      "Accept": "application/json",
+      "Authorization": `Token ${localStorage.getItem("auth_token")}`
     },
     body: JSON.stringify(postTagIdArray)
   })
