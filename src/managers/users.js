@@ -9,7 +9,7 @@ export const getUserById = (id) => {
 }
 
 export const getCurrentAuthor = () => {
-    return fetch(`http://localhost:8088/authors?current=true`, {
+    return fetch(`http://localhost:8000/authors?current=true`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
