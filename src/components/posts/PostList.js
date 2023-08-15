@@ -153,7 +153,7 @@ export const PostList = () => {
                   {post.author?.username}
                 </Link>
               </div>
-              <div>Category: {post.category.label}</div>
+              <div>Category: {post.category?.label}</div>
             </section>
           );
         })}
