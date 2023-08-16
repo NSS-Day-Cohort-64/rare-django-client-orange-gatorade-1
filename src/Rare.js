@@ -5,14 +5,20 @@ import { NavBar } from "./components/nav/NavBar"
 
 export const Rare = () => {
   const [token, setTokenState] = useState(localStorage.getItem('auth_token'))
+  const [isRareAdmin, setIsAdminState] = useState(localStorage.getItem('rare_admin'))
 
   const setToken = (newToken) => {
     localStorage.setItem('auth_token', newToken)
     setTokenState(newToken)
   }
 
+  const setIsRareAdmin = (isStaff) => {
+    localStorage.setItem('rare_admin', isStaff)
+    setIsAdminState(isStaff)
+  }
+
   return <>
-    <NavBar token={token} setToken={setToken} />
-    <ApplicationViews token={token} setToken={setToken} />
+    <NavBar token={token} setToken={setToken} isAdmin={JSON.parse(isRareAdmin)} setAdmin={setIsRareAdmin} />
+    <ApplicationViews token={token} setToken={setToken} isAdmin={JSON.parse(isRareAdmin)} setAdmin={setIsRareAdmin} />
   </>
 }
