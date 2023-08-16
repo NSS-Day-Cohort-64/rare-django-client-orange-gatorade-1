@@ -31,7 +31,7 @@ export const Login = ({ setToken, setAdmin }) => {
   // Autofill Username/Password by default streamline devolopment process 
   useEffect(
     () => {
-      username.current.value = "meg@ducharme.com"
+      username.current.value = "megducharme"
       password.current.value = "ducharme"
     },
     []
