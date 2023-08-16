@@ -53,10 +53,14 @@ export const putPost = (postId, post) => {
   });
 };
 
-export const getPostsByUser = (userId) => {
-  return fetch(`http://localhost:8000/posts?user=${userId}`).then((res) =>
-    res.json()
-  );
+export const getPostsByAuthor = async (id) => {
+  const response = await fetch(`http://localhost:8000/posts?author=${id}`, {
+    headers: {
+      Authorization: `Token ${localStorage.getItem("auth_token")}`,
+    },
+  })
+  const posts = await response.json()
+  return posts
 };
 
 export const getPostsByTitle = (title) => {
@@ -66,10 +70,10 @@ export const getPostsByTitle = (title) => {
 };
 
 export const getPostsByTag = (tagId) => {
-    return fetch(`http://localhost:8000/posts?tag=${tagId}`, {
-        headers: {
-            "Authorization": `Token ${localStorage.getItem("auth_token")}`
-        }
-    })
-        .then(res => res.json())
+  return fetch(`http://localhost:8000/posts?tag=${tagId}`, {
+    headers: {
+      "Authorization": `Token ${localStorage.getItem("auth_token")}`
+    }
+  })
+    .then(res => res.json())
 }

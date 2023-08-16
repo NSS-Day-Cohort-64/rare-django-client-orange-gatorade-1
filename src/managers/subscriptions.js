@@ -18,3 +18,14 @@ export const deleteSubscription = (subscriptionId) => {
         method: "DELETE"
     })
 }
+
+export const getMySubscriptions = async(currentUser) => {
+    const response = await fetch(`http://localhost:8000/subscriptions?follower=${currentUser[0].id}`, {
+        headers: {
+            Authorization: `Token ${localStorage.getItem("auth_token")}`,
+        },
+    })
+    const followedAuthors = await response.json()
+    return followedAuthors
+}
+
