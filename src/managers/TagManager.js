@@ -57,3 +57,15 @@ export const deleteTagRelationships = (postTagIdArray) => {
     body: JSON.stringify(postTagIdArray)
   })
 }
+
+export const editTags = (id, editedTag) => {
+  return fetch(`http://localhost:8000/tags/${id}`, {
+      method: "PUT",
+      headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": `Token ${localStorage.getItem("auth_token")}`
+      },
+      body: JSON.stringify(editedTag)
+  })
+}
