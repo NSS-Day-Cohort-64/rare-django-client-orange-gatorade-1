@@ -52,6 +52,13 @@ export const UserViews = ({ token, setToken, isAdmin, setAdmin }) => {
             element={<CommentEditForm token={token} />}
           />
 
+          <Route path="/users">
+            <Route index element={<UserList />} />
+            <Route path=":userId" element={<UserDetail token={token} />} />
+          </Route>
+          <Route path="/postform" element={<PostForm token={token} />} />
+          <Route path="/my-posts/:postId/edit" element={<PostEdit />} />
+
           <Route path="/users/:userId" element={<UserDetail token={token} />} />
 
           <Route path="/postform" element={<PostForm token={token} />} />

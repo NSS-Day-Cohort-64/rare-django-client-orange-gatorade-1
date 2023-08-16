@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUserById } from "../../managers/users";
+import { getAuthorById, getUserById } from "../../managers/users";
 import { useNavigate, useParams } from "react-router-dom";
 import { addSubscription, getAllSubscriptions, deleteSubscription } from "../../managers/subscriptions";
 
@@ -11,23 +11,24 @@ export const UserDetail = ({ token }) => {
     const { userId } = useParams()
 
     useEffect(() => {
-        getUserById(userId)
+        getAuthorById(userId)
             .then(setUser)
     }, [userId])
-
+    /*
     useEffect(() => {
         getAllSubscriptions().then(data => setSubscriptions(data));
       }, [])
-
+    
       useEffect(() => {
         if(subscriptions.length != 0) {
         const alreadySubscribed = subscriptions.find(s => s.follower_id === parseInt(token) && s.author_id === user.id)
         setSubscribed(alreadySubscribed)
         }
     }, [subscriptions, user])
-
+    */
 
     const subscribeToUser = () => {
+        /*
         const follower_id = parseInt(localStorage.getItem("auth_token"))
 
         addSubscription({
@@ -40,31 +41,52 @@ export const UserDetail = ({ token }) => {
                 localStorage.setItem("follower_id", follower_id);
                 navigate("/");
             })
+        */
+       // Pass
     }
 
     const unsubscribeToUser = () => {
-
+        /*
         deleteSubscription(alreadySubscribed.id)
             .then(() => {
                 navigate("/");
             })
+        */
+       // Pass
     }
-
+    
     
     
 
     return (
-        <section className="userPage">
-            <h1>{user?.username}'s Page</h1>
+        <section className="userPage py-4 px-4">
+            <h1 className="title is-3">{user?.username}</h1>
             {user?.profile_image_url && (
                 <img
                     className="user__profileIMG"
                     src={user.profile_image_url}
                 />
             )}
-            <h3 className="user__createdate">Created on: {user?.created_on}</h3>
-            <h3 className="user__fullname">Full Name: {user?.first_name} {user?.last_name}</h3>
-            <div className="user__bio">{user?.bio}</div>
+            <div>
+                <span className="has-text-weight-bold">Created on: </span>
+                <span className="user__createdate">{user?.created_on}</span>
+            </div>
+            <div>
+                <span className="has-text-weight-bold">Full Name: </span>
+                <span className="user__fullname">{user?.first_name} {user?.last_name}</span>
+            </div>
+            <div>
+                <span className="has-text-weight-bold">Email: </span>
+                <span className="user__email">{user?.email}</span>
+            </div>
+            <div>
+                <span className="has-text-weight-bold">Bio: </span>
+                <span className="user__bio">{user?.bio}</span>
+            </div>
+            <div className="mb-2">
+                <span className="has-text-weight-bold">User Type: </span>
+                <span className="userType">{user?.is_staff ? "Admin" : "Author"} </span>
+            </div>
             { 
                 alreadySubscribed ?
                 <button
