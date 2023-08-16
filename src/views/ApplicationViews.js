@@ -16,11 +16,11 @@ import { CommentForm } from "../components/comments/CommentForm"
 import { SubscribedUserPosts } from "../components/subscriptions/ViewSubscribedUserPosts"
 import { EditCategory } from "../components/Categories/EditCategory"
 
-export const ApplicationViews = ({ token, setToken}) => {
+export const ApplicationViews = ({ token, setToken, isAdmin, setAdmin}) => {
   return <>
     <Routes>
-      <Route path="/login" element={<Login setToken={setToken} />}  />
-      <Route path="/register" element={<Register setToken={setToken} />}  />
+      <Route path="/login" element={<Login setToken={setToken} setAdmin={setAdmin} />}  />
+      <Route path="/register" element={<Register setToken={setToken} setAdmin={setAdmin} />}  />
       <Route element={<Authorized token={token} />}>
         <Route index element={<SubscribedUserPosts token={token} />} />
 

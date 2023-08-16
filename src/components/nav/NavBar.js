@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import "./NavBar.css"
 import Logo from "./rare.jpeg"
 
-export const NavBar = ({ token, setToken }) => {
+export const NavBar = ({ token, setToken, isAdmin }) => {
   const navigate = useNavigate()
   const navbar = useRef()
   const hamburger = useRef()
@@ -57,6 +57,7 @@ export const NavBar = ({ token, setToken }) => {
                   ?
                   <button className="button is-outlined" onClick={() => {
                     setToken('')
+                    localStorage.removeItem('rare_admin')
                     navigate('/login')
                   }}>Logout</button>
                   :
