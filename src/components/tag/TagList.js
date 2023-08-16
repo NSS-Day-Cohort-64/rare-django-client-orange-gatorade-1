@@ -41,7 +41,7 @@ export const TagList = ({ token }) => {
 
         <div className="tags columns column is-full is-justify-content-space-evenly mt-3">
           {tags.map((tag) => (
-            <section className="tag box is-primary is-light column is-one-third py-5 is-justify-content-space-between" key={`editTag--${tag.id}`}>
+            <section className="tag box is-primary is-light column is-two-fifths py-5 is-justify-content-space-between" key={`editTag--${tag.id}`}>
               {showEditForm === tag.id ? (
                 <EditTag
                   tag={tag}
