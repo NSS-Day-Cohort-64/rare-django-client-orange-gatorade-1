@@ -1,32 +1,43 @@
 import { useEffect, useState } from "react";
-import { getUserById } from "../../managers/users";
+import { getCurrentAuthor, getUserById } from "../../managers/users";
 
-export const SubscribedUserPosts = ({token}) => {
+export const SubscribedUserPosts = ({ token }) => {
     const [subscribedPosts, setSubscribedPosts] = useState([]);
     const [user, setUser] = useState({});
+    const [currentUser, setCurrentUser] = useState([{
+        id: 0
+    }])
 
     useEffect(() => {
-        fetchSubscribedPosts();
-    }, []);
+        getCurrentAuthor()
+            .then((user) => setCurrentUser(user))
+    }, [])
+
+    useEffect(() => {
+        if (currentUser[0].id !== 0) {
+            fetchSubscribedPosts();
+        }
+    }, [currentUser]);
 
     const fetchSubscribedPosts = async () => {
-        const response = await fetch("http://localhost:8088/", {
+        const response = await fetch(`http://localhost:8000/subscriptions?follower=${currentUser[0].id}`, {
             headers: {
-                Authorization: localStorage.getItem("auth_token"),
+                Authorization: `Token ${localStorage.getItem("auth_token")}`,
             },
-        });
+        })
+        
+        const data = await response.json()
 
-        const data = await response.json();
         // Check if response is array
         if (Array.isArray(data)) {
-            const notMyPosts = data.filter((post) => post.author_id !== parseInt(token));
-            setSubscribedPosts(notMyPosts);
+            const followedPosts = data.filter((post) => post.follower !== currentUser[0].id);
+            setSubscribedPosts(followedPosts);
         }
         // Check if response is object with message
         if (data.message) {
             setSubscribedPosts(data)
         }
-        
+
     }
 
     return (
@@ -52,7 +63,7 @@ export const SubscribedUserPosts = ({token}) => {
                 <p>{subscribedPosts?.message}</p>
 
             )}
-            
+
         </>
     );
 };
