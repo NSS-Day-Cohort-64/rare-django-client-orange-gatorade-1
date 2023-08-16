@@ -63,9 +63,6 @@ export const PostComments = ({ token }) => {
             </div>
             <div>Created: {comment.date_created}</div>
             <div>
-              {console.log("Comment Author ID:", comment.author?.id)}
-              {console.log("Current Author ID:", currentAuthorId)}
-
               {comment.author?.id === currentAuthorId[0].id ? (
                 <button
                   onClick={(event) => {
