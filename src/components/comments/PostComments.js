@@ -42,7 +42,7 @@ export const PostComments = ({ token }) => {
 
   useEffect(() => {
     getCurrentAuthor(token).then((author) => {
-      setCurrentAuthorId(author);
+      setCurrentAuthorId(author[0]);
     });
   }, [token]);
 
@@ -63,7 +63,7 @@ export const PostComments = ({ token }) => {
             </div>
             <div>Created: {comment.date_created}</div>
             <div>
-              {comment.author?.id === currentAuthorId[0].id ? (
+              {comment.author.id === currentAuthorId.id ? (
                 <button
                   onClick={(event) => {
                     deleteButton(comment, event);
