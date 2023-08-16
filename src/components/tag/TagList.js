@@ -39,9 +39,9 @@ export const TagList = ({ token }) => {
       <div style={{ margin: "0rem 3rem" }} className="column is-two-thirds">
         <h1>Tags</h1>
 
-        <div className="tags column is-full is-justify-content-space-evenly mt-3">
+        <div className="tags columns column is-full is-justify-content-space-evenly mt-3">
           {tags.map((tag) => (
-            <section className="tag box is-primary is-light" key={`editTag--${tag.id}`}>
+            <section className="tag box is-primary is-light column is-one-third py-5 is-justify-content-space-between" key={`editTag--${tag.id}`}>
               {showEditForm === tag.id ? (
                 <EditTag
                   tag={tag}
@@ -50,20 +50,22 @@ export const TagList = ({ token }) => {
                   updateTags={updateTags}
                 />
               ) : (<>
-                <div className="tagLabel">{tag.label}</div>
-                <button
-                  className="button is-success is-light is-outlined is-small is-responsive ml-1"
-                  onClick={(click) => updateShowEditForm(tag.id)}
-                >
-                  Edit
-                </button>
+                    <div className="tagLabel pl-2">{tag.label}</div>
+                    <section>
+                      <button
+                        className="button is-success is-light is-outlined is-small is-responsive ml-1"
+                        onClick={(click) => updateShowEditForm(tag.id)}
+                      >
+                        Edit
+                      </button>
 
-                <button
-                  className="button is-info is-light is-small is-responsive is-outlined"
-                  onClick={(event) => deleteButton(tag.id, event)}
-                >
-                  Delete
-                </button>
+                      <button
+                        className="button is-info is-light is-small is-responsive is-outlined"
+                        onClick={(event) => deleteButton(tag.id, event)}
+                      >
+                        Delete
+                      </button>
+                    </section>
               </>)}
             </section>
           ))}
