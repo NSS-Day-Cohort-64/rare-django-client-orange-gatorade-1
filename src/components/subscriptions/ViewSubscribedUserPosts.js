@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCurrentAuthor, getUserById } from "../../managers/users";
+import { getPostsByAuthor } from "../../managers/posts";
+import { getMySubscriptions } from "../../managers/subscriptions";
 
 export const SubscribedUserPosts = ({ token }) => {
     const [subscribedPosts, setSubscribedPosts] = useState([]);
@@ -20,23 +22,17 @@ export const SubscribedUserPosts = ({ token }) => {
     }, [currentUser]);
 
     const fetchSubscribedPosts = async () => {
-        const response = await fetch(`http://localhost:8000/subscriptions?follower=${currentUser[0].id}`, {
-            headers: {
-                Authorization: `Token ${localStorage.getItem("auth_token")}`,
-            },
-        })
-        
-        const data = await response.json()
+        const followedAuthors = await getMySubscriptions(currentUser)
 
-        // Check if response is array
-        if (Array.isArray(data)) {
-            const followedPosts = data.filter((post) => post.follower !== currentUser[0].id);
-            setSubscribedPosts(followedPosts);
+        const myFeed = [...subscribedPosts]
+        for (const author of followedAuthors) {
+            const posts = await getPostsByAuthor(author.id)
+            for (const post of posts) {
+                myFeed.push(post)
+            }
         }
-        // Check if response is object with message
-        if (data.message) {
-            setSubscribedPosts(data)
-        }
+        setSubscribedPosts(myFeed);
+
 
     }
 
@@ -48,19 +44,19 @@ export const SubscribedUserPosts = ({ token }) => {
                     {subscribedPosts.map((post) => (
                         <li key={post.id}>
                             <div>===================================================</div>
-                            <p>Author: {post.author_username}</p>
+                            <p>Author: {post.author.username}</p>
                             <img
                                 className="author__postIMG"
                                 src={post.image_url}
                             />
                             <p>Title: {post.title}</p>
-                            <p>Category: {post.category_label}</p>
+                            <p>Category: {post.category.label}</p>
                             <p>Publication Date: {post.publication_date}</p>
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p>{subscribedPosts?.message}</p>
+                <p>Subscribe To Users To See Their Posts!</p>
 
             )}
 
