@@ -10,8 +10,15 @@ export const getAllAuthors = () => {
         .then(res => res.json())
 }
 
-export const getUserById = (id) => {
-    return fetch(`http://localhost:8000/users/${id}`)
+export const getAuthorById = (id) => {
+    return fetch(`http://localhost:8000/authors/${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": `Token ${localStorage.getItem("auth_token")}`
+        }
+    })
         .then(res => res.json())
 }
 
