@@ -5,8 +5,9 @@ import {
   getPostsByTag,
   getPostsByTitle,
   getPostsByUser,
+  putPost,
 } from "../../managers/posts";
-import { getUsers } from "../../managers/users";
+import { getCurrentAuthor, getUsers } from "../../managers/users";
 import { getCategories } from "../../managers/categories";
 import { Link } from "react-router-dom";
 import { getTags } from "../../managers/TagManager";
@@ -14,6 +15,7 @@ import { getTags } from "../../managers/TagManager";
 export const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [currentUser, setCurrentUser] = useState({})
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
@@ -26,7 +28,16 @@ export const PostList = () => {
   const [titleInput, setTitleInput] = useState(""); // New state to track the input field value
 
   useEffect(() => {
+    getCurrentAuthor()
+      .then((user) => setCurrentUser(user))
+  }, [])
+
+  const retrievePosts = () => {
     getPosts().then((postsData) => setPosts(postsData));
+  }
+
+  useEffect(() => {
+    retrievePosts()
     // getUsers().then((usersData) => setUsers(usersData));
     // getCategories().then((categoriesData) => setCategories(categoriesData));
     //getTags().then((tagData) => setTags(tagData));
@@ -86,6 +97,19 @@ export const PostList = () => {
   const handleTitleSubmit = () => {
     setFilters({ ...filters, title: titleInput }); // Update the title filter
   };
+
+  const handleApproveClick = async(currentPost) => {
+    const copy = [...posts]
+    let selectedPost = copy.find(post => post.id === currentPost.id)
+    const editedPost = {...selectedPost}
+    editedPost.approved = !currentPost.approved
+    const selectedTags = [...selectedPost.tags]
+    editedPost.tags = selectedTags.map(tag => tag.id)
+    editedPost.category = editedPost.category.id
+    editedPost.author = editedPost.author.id
+    await putPost(currentPost.id, editedPost)
+    retrievePosts()
+  }
 
   return (
     <div style={{ margin: "0rem 3rem" }}>
@@ -153,7 +177,30 @@ export const PostList = () => {
                   {post.author?.username}
                 </Link>
               </div>
+              <div>Date: {post.publication_date}</div>
               <div>Category: {post.category?.label}</div>
+              <div>Tags:
+                {post.tags.map((tag) => (
+                  <span key={`tag--${tag.id}`} className="tag">
+                    {tag.label}
+                  </span>
+                ))}
+              </div>
+              {currentUser[0].is_staff
+                ? <>
+                 <div>
+                            <label>
+                              Approved
+                                <input
+                                    type="checkbox"
+                                    value={post.approved}
+                                    checked={post.approved}
+                                    onChange={() => handleApproveClick(post)}
+                                />
+                            </label>
+                        </div>
+                </>
+                : ""}
             </section>
           );
         })}
