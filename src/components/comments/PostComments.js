@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCommentsByPost } from "../../managers/comments";
 import { getPostById } from "../../managers/posts";
 import { getCurrentAuthor } from "../../managers/users";
+import { CommentEditForm } from "./CommentEditForm";
 
 export const PostComments = ({ token }) => {
   const { postId } = useParams();
   const [comments, setComments] = useState([]);
   const [post, setPost] = useState({});
+  const [showEditForm, setShowEditForm] = useState(null);
 
   const navigate = useNavigate();
 
@@ -40,6 +42,12 @@ export const PostComments = ({ token }) => {
     }
   };
 
+  const refreshPage = () => {
+    getCommentsByPost(postId).then((foundComments) =>
+      setComments(foundComments)
+    );
+  };
+
   useEffect(() => {
     getCurrentAuthor(token).then((author) => {
       setCurrentAuthorId(author[0]);
@@ -51,34 +59,56 @@ export const PostComments = ({ token }) => {
   });
 
   return (
-    <div style={{ margin: "0rem 3rem" }}>
-      <h1>Comments for "{post.title}"</h1>
-      {sortedComments.reverse().map((comment) => {
+    <div className="container mt-4">
+      <h1 className="title is-size-4 has-text-success mb-4">
+        Comments for "{post.title}"
+      </h1>
+      {sortedComments.map((comment) => {
         return (
-          <section className="comment" key={`comment--${comment.id}`}>
-            <div>==============================</div>
-            <div>Comment: {comment.content}</div>
-            <div>
-              User: {comment.author?.first_name} {comment.author?.last_name}
-            </div>
-            <div>Created: {comment.date_created}</div>
-            <div>
-              {comment.author.id === currentAuthorId.id ? (
-                <button
-                  onClick={(event) => {
-                    deleteButton(comment, event);
-                  }}
-                >
-                  Delete
-                </button>
-              ) : (
-                ""
+          <div className="box my-3" key={`comment--${comment.id}`}>
+            <div className="content">
+              <p className="has-text-black">{comment.content}</p>
+              <p className="is-italic is-size-7 has-text-black">
+                - {comment.author?.first_name} {comment.author?.last_name}
+              </p>
+              <p className="is-size-7 has-text-grey">
+                Created: {comment.date_created}
+              </p>
+              {comment.author.id === currentAuthorId.id && (
+                <div className="buttons mt-2">
+                  <button
+                    className="button is-danger is-small mr-1"
+                    onClick={(event) => {
+                      deleteButton(comment, event);
+                    }}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="button is-primary is-small"
+                    onClick={() => {
+                      setShowEditForm(comment.id);
+                    }}
+                  >
+                    Edit
+                  </button>
+                </div>
+              )}
+              {showEditForm === comment.id && (
+                <CommentEditForm
+                  comment={comment}
+                  postId={postId}
+                  token={token}
+                  onClose={() => setShowEditForm(null)}
+                  refreshPage={refreshPage}
+                />
               )}
             </div>
-          </section>
+          </div>
         );
       })}
       <button
+        className="button is-success mt-3"
         onClick={() => {
           navigate(`/commentform/${postId}`);
         }}
