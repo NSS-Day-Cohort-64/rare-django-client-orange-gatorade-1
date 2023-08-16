@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { getCategories } from "../../managers/categories";
 import { CreateCategory } from "./CreateCategory";
+import { useNavigate } from "react-router-dom";
+import { EditCategory } from "./EditCategory";
 
 export const CategoryList = () => {
   const [categoryList, setList] = useState([]);
-  const [showForm, updateShowForm] = useState(false);
+  const [showForm, updateShowForm] = useState(false)
+  const [showEditForm, updateShowEditForm] = useState(0)
+  const navigate = useNavigate()
 
   const updateCategories = () => {
     getCategories().then((categoryList) => {
@@ -34,9 +38,6 @@ export const CategoryList = () => {
     }
   };
 
-  const editButton = () => {
-    return <button> Edit</button>;
-  };
   return (
     <article className="is-flex is-justify-content-space-evenly">
       <section className="categories">
@@ -46,9 +47,23 @@ export const CategoryList = () => {
           .map((list) => (
             <section className="category" key={list.id}>
               <div className="categoryName">{list.label}</div>
-              <button className="editButton" onClick={editButton}>
-                Edit
-              </button>
+              <section className="editCategory">
+                {showEditForm === list.id ? (
+                  <EditCategory
+                    categoryId={list.id}
+                    updateShowEditForm={updateShowEditForm}
+                    categoryList={categoryList}
+                    updateCategories={updateCategories}
+                  />
+                ) : (
+                  <button
+                    className="showCreateCategory"
+                    onClick={(click) => updateShowEditForm(list.id)}
+                  >
+                    Edit
+                  </button>
+                )}
+              </section>
               <button
                 className="deleteButton"
                 onClick={(event) => deleteButton(list.id, event)}
@@ -74,6 +89,7 @@ export const CategoryList = () => {
           </button>
         )}
       </section>
+
     </article>
   );
 };
