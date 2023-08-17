@@ -44,7 +44,8 @@ export const ManagePostTags = ({ token, postId, currentPost, originalTagsOnPost,
             title: post.title,
             image_url: post.image_url,
             content: post.content,
-            tags: tagsOnPost
+            tags: tagsOnPost,
+            approved: true
         };
 
         fetch(`http://localhost:8000/posts/${postId}`, {
