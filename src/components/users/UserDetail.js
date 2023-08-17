@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { getAuthorById, getUserById } from "../../managers/users";
+import { getAuthorById, getCurrentAuthor, getUserById } from "../../managers/users";
 import { useNavigate, useParams } from "react-router-dom";
-import { addSubscription, getAllSubscriptions, deleteSubscription } from "../../managers/subscriptions";
+import { addSubscription, getAllSubscriptions, deleteSubscription, getMySubscriptions, editSubscription } from "../../managers/subscriptions";
 
 export const UserDetail = ({ token }) => {
     const [user, setUser] = useState()
-    const [subscriptions, setSubscriptions] = useState([])
+    const [currentUser, setCurrentUser] = useState({})
+    const [subscription, setSubscription] = useState({})
     const [alreadySubscribed, setSubscribed] = useState()
     let navigate = useNavigate()
     const { userId } = useParams()
@@ -14,49 +15,57 @@ export const UserDetail = ({ token }) => {
         getAuthorById(userId)
             .then(setUser)
     }, [userId])
-    /*
+
     useEffect(() => {
-        getAllSubscriptions().then(data => setSubscriptions(data));
-      }, [])
-    
-      useEffect(() => {
-        if(subscriptions.length != 0) {
-        const alreadySubscribed = subscriptions.find(s => s.follower_id === parseInt(token) && s.author_id === user.id)
-        setSubscribed(alreadySubscribed)
+        getCurrentAuthor()
+            .then((user) => setCurrentUser(user[0]))
+    }, [])
+
+
+    useEffect(() => {
+        if (currentUser.id) {
+            const query = `?follower=${currentUser.id}&author=${userId}`
+            getMySubscriptions(query).then(data => setSubscription(data[0]))
         }
-    }, [subscriptions, user])
-    */
+    }, [currentUser])
+
 
     const subscribeToUser = () => {
-        /*
-        const follower_id = parseInt(localStorage.getItem("auth_token"))
 
-        addSubscription({
-            follower_id: follower_id,
-            author_id: parseInt(user.id),
-            created_on: new Date().toISOString().split('T')[0]
-        })
-            .then(() => {
-                // Update the follower_id in localStorage after successful subscription
-                localStorage.setItem("follower_id", follower_id);
-                navigate("/");
-            })
-        */
-       // Pass
+        const postBody = {
+            follower: parseInt(currentUser.id),
+            author: parseInt(user.id)
+        }
+
+        if (subscription?.subscribed === false) {
+            postBody.date_subscribed = subscription.date_subscribed
+            postBody.date_unsubscribed = subscription.date_unsubscribed
+            postBody.subscribed = true
+            editSubscription(subscription.id, postBody)
+                .then(() => { navigate("/") })
+        } else {
+            addSubscription(postBody)
+                .then(() => { navigate("/") })
+        }
     }
 
     const unsubscribeToUser = () => {
-        /*
-        deleteSubscription(alreadySubscribed.id)
-            .then(() => {
-                navigate("/");
-            })
-        */
-       // Pass
+
+        const postBody = {
+            follower: parseInt(currentUser.id),
+            author: parseInt(user.id),
+            date_subscribed: subscription.date_subscribed,
+            date_unsubscribed: subscription.date_unsubscribed,
+            subscribed: false
+        }
+
+        editSubscription(subscription.id, postBody)
+            .then(() => { navigate("/") })
     }
-    
-    
-    
+
+
+
+
 
     return (
         <section className="userPage py-4 px-4">
@@ -87,19 +96,19 @@ export const UserDetail = ({ token }) => {
                 <span className="has-text-weight-bold">User Type: </span>
                 <span className="userType">{user?.is_staff ? "Admin" : "Author"} </span>
             </div>
-            { 
-                alreadySubscribed ?
-                <button
-                onClick={() => { unsubscribeToUser() }}
-                className="btn btn-primary">Unsubscribe</button>
-                :
-            
-            <button
-                onClick={(clickEvt) => { subscribeToUser(clickEvt) }}
-                className="btn btn-primary"
-            >
-                Subscribe
-            </button>
+            {
+                subscription?.subscribed ?
+                    <button
+                        onClick={() => { unsubscribeToUser() }}
+                        className="btn btn-primary">Unsubscribe</button>
+                    :
+
+                    <button
+                        onClick={(clickEvt) => { subscribeToUser(clickEvt) }}
+                        className="btn btn-primary"
+                    >
+                        Subscribe
+                    </button>
             }
         </section>
     );
