@@ -15,6 +15,7 @@ import { PostComments } from "../components/comments/PostComments";
 import { CommentForm } from "../components/comments/CommentForm";
 import { SubscribedUserPosts } from "../components/subscriptions/ViewSubscribedUserPosts";
 import { CommentEditForm } from "../components/comments/CommentEditForm";
+import { ReactionList } from "../components/reactions/ReactionList";
 
 export const AdminViews = ({ token, setToken, isAdmin, setAdmin }) => {
   return (
@@ -58,6 +59,7 @@ export const AdminViews = ({ token, setToken, isAdmin, setAdmin }) => {
           </Route>
           <Route path="/postform" element={<PostForm token={token} />} />
           <Route path="/my-posts/:postId/edit" element={<PostEdit />} />
+          <Route path="/reactions" element={<ReactionList />} />
         </Route>
       </Routes>
     </>
