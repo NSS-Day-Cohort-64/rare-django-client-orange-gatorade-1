@@ -77,3 +77,13 @@ export const getPostsByTag = (tagId) => {
   })
     .then(res => res.json())
 }
+
+export const getFilteredPosts = async (query) => {
+  const response = await fetch(`http://localhost:8000/posts${query}`, {
+    headers: {
+      Authorization: `Token ${localStorage.getItem("auth_token")}`,
+    },
+  })
+  const posts = await response.json()
+  return posts
+}
