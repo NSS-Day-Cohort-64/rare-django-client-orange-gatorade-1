@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  getFilteredPosts,
   getPosts,
   getPostsByCategory,
   getPostsByTag,
@@ -7,7 +8,7 @@ import {
   getPostsByUser,
   putPost,
 } from "../../managers/posts";
-import { getCurrentAuthor, getUsers } from "../../managers/users";
+import { getAllAuthors, getCurrentAuthor } from "../../managers/users";
 import { getCategories } from "../../managers/categories";
 import { Link } from "react-router-dom";
 import { getTags } from "../../managers/TagManager";
@@ -21,7 +22,7 @@ export const PostList = () => {
   const [tags, setTags] = useState([]);
   const [filters, setFilters] = useState({
     categoryId: 0,
-    userId: 0,
+    authorId: 0,
     title: "",
     tagId: 0,
   });
@@ -38,40 +39,49 @@ export const PostList = () => {
 
   useEffect(() => {
     retrievePosts()
-    // getUsers().then((usersData) => setUsers(usersData));
-    // getCategories().then((categoriesData) => setCategories(categoriesData));
-    //getTags().then((tagData) => setTags(tagData));
+    getAllAuthors().then((usersData) => setUsers(usersData));
+    getCategories().then((categoriesData) => setCategories(categoriesData));
+    getTags().then((tagData) => setTags(tagData));
   }, []);
 
   useEffect(() => {
     applyFilters();
   }, [filters, posts]);
 
-  const applyFilters = () => {
-    let filteredResults = posts;
+  const applyFilters = async () => {
+    let query = '';
 
     if (filters.categoryId !== 0) {
-      filteredResults = filteredResults.filter(
-        (post) => post.category_id === filters.categoryId
-      );
+      query += `?category=${filters.categoryId}`
     }
 
-    if (filters.userId !== 0) {
-      filteredResults = filteredResults.filter(
-        (post) => post.user_id === filters.userId
-      );
+    if (filters.authorId !== 0) {
+      if (query !== '') {
+        query += `&author=${filters.authorId}`
+      }
+      else {
+        query += `?author=${filters.authorId}`
+      }
     }
 
     if (filters.title.trim() !== "") {
-      filteredResults = filteredResults.filter((post) =>
-        post.title.toLowerCase().includes(titleInput.toLowerCase())
-      );
+      if (query !== '') {
+        query += `&title=${filters.title}`
+      }
+      else {
+        query += `?title=${filters.title}`
+      }
     }
 
     if (filters.tagId !== 0) {
-      getPostsByTag(filters.tagId).then((posts) => setFilteredPosts(posts));
+      if (query !== '') {
+        query += `&tag=${filters.tagId}`
+      }
+      else {
+        query += `?tag=${filters.tagId}`
+      }
     }
-
+    const filteredResults = await getFilteredPosts(query)
     setFilteredPosts(filteredResults);
   };
 
@@ -81,8 +91,8 @@ export const PostList = () => {
   };
 
   const handleAuthorChange = (event) => {
-    const userId = parseInt(event.target.value);
-    setFilters({ ...filters, userId });
+    const authorId = parseInt(event.target.value);
+    setFilters({ ...filters, authorId });
   };
 
   const handleTagChange = (event) => {
