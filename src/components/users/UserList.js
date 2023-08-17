@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { getAllAuthors } from "../../managers/users"
 import { useEffect, useState } from 'react';
 
-export const UserList = () => {
+export const UserList = ({isAdmin}) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {

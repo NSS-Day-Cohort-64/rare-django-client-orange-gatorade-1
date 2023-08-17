@@ -32,7 +32,7 @@ export const AdminViews = ({ token, setToken, isAdmin, setAdmin}) => {
         <Route path="/commentform/:postId" element={<CommentForm token={token}/>}  />
         
         <Route path="/users"> 
-          <Route index element={<UserList />} />
+          <Route index element={<UserList isAdmin={isAdmin} />} />
           <Route path=":userId" element={<UserDetail token={token}/>} />
         </Route>
         <Route path="/postform" element={<PostForm token={token}/>}  />
