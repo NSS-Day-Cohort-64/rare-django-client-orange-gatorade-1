@@ -60,11 +60,11 @@ export const AdminNav = ({ token, setToken, isAdmin }) => {
               <Link to="/tags" className="navbar-item">
                 Tag Management
               </Link>
-              <Link to="/postform" className="navbar-item">
-                New Post
-              </Link>
               <Link to="/reactions" className="navbar-item">
                 Reaction Management
+              </Link>
+              <Link to="/postform" className="navbar-item">
+                New Post
               </Link>
             </>
           ) : (
