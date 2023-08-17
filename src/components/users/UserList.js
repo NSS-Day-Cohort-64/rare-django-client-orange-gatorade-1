@@ -1,18 +1,57 @@
 import { Link } from "react-router-dom";
-import { getAllAuthors } from "../../managers/users"
+import { getActiveAuthors, getAllAuthors, getDeactivatedAuthors } from "../../managers/users"
 import { useEffect, useState } from 'react';
+import { activateUser, deactivateUser } from "../../managers/AdminManager";
+import { DeactivateButton } from "./DeactivateUser";
 
 export const UserList = ({isAdmin}) => {
   const [users, setUsers] = useState([]);
+  const [authorsToDisplay, setAuthorsToDisplay] = useState('active')
 
-  useEffect(() => {
-    getAllAuthors().then(userArray => setUsers(userArray));
-  }, []);
+  useEffect(
+    () => {
+      if (authorsToDisplay === 'active') {
+        getActiveAuthors().then(userArray => setUsers(userArray));
+      }
+      if (authorsToDisplay === 'deactivated') {
+        getDeactivatedAuthors().then(userArray => setUsers(userArray));
+      }
+    },
+    [authorsToDisplay]
+  )
+
+  const handleActiveChange = (evt) => {
+    const activeState = evt.target.value
+    setAuthorsToDisplay(activeState)
+  }
+
+  const handleReactivateAcct = (e, accountId) => {
+    e.preventDefault()
+    activateUser(accountId).then(() => {
+      // Trigger useEffect and re-render author list
+      getDeactivatedAuthors().then(userArray => setUsers(userArray));
+    })
+}
 
   return (
 
     <>
       <h2 className="userList py-1 ml-3">List of Users</h2>
+
+      {
+        isAdmin && 
+        <>
+          <label htmlFor="filterByUser">View Active or Inactive Users</label>
+          <select
+            name="activeStatusSelect"
+            className="form-control"
+            onChange={(e) => { handleActiveChange(e) }}
+          >
+            <option value={'active'}>View Active</option>
+            <option value={'deactivated'}>View Deactivated</option>
+          </select>
+        </>
+      }
 
       <article className="users pt-1 pb-5">
         {users
@@ -23,6 +62,16 @@ export const UserList = ({isAdmin}) => {
               <div className="userfullName">Full Name: <Link to={`/users/${user.id}`}>{user.first_name} {user.last_name}</Link></div>
               <div className="userEmail">Email: {user.email} </div>
               <div className="userType">User Type: {user.is_staff ? "Admin" : "Author"} </div>
+              {
+                isAdmin && user.is_active &&
+                <DeactivateButton accountId={user.id} setUsers={setUsers} />
+              }
+              {
+                isAdmin && !user.is_active &&
+                <button
+                  onClick={(click) => { handleReactivateAcct(click, user.id) }}
+                >Reactivate</button>
+              }
             </section>
           ))}
       </article>
