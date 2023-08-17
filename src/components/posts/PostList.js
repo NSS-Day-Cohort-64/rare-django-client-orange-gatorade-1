@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
+  getFilteredPosts,
   getPosts,
-  getPostsByCategory,
-  getPostsByTag,
-  getPostsByTitle,
-  getPostsByUser,
   putPost,
 } from "../../managers/posts";
-import { getCurrentAuthor, getUsers } from "../../managers/users";
+import { getAllAuthors, getCurrentAuthor } from "../../managers/users";
 import { getCategories } from "../../managers/categories";
 import { Link } from "react-router-dom";
 import { getTags } from "../../managers/TagManager";
@@ -21,7 +18,7 @@ export const PostList = () => {
   const [tags, setTags] = useState([]);
   const [filters, setFilters] = useState({
     categoryId: 0,
-    userId: 0,
+    authorId: 0,
     title: "",
     tagId: 0,
   });
@@ -32,46 +29,51 @@ export const PostList = () => {
       .then((user) => setCurrentUser(user))
   }, [])
 
-  const retrievePosts = () => {
-    getPosts().then((postsData) => setPosts(postsData));
-  }
-
   useEffect(() => {
-    retrievePosts()
-    // getUsers().then((usersData) => setUsers(usersData));
-    // getCategories().then((categoriesData) => setCategories(categoriesData));
-    //getTags().then((tagData) => setTags(tagData));
+    applyFilters()
+    getAllAuthors().then((usersData) => setUsers(usersData));
+    getCategories().then((categoriesData) => setCategories(categoriesData));
+    getTags().then((tagData) => setTags(tagData));
   }, []);
 
   useEffect(() => {
     applyFilters();
-  }, [filters, posts]);
+  }, [filters]);
 
-  const applyFilters = () => {
-    let filteredResults = posts;
+  const applyFilters = async () => {
+    let query = '';
 
     if (filters.categoryId !== 0) {
-      filteredResults = filteredResults.filter(
-        (post) => post.category_id === filters.categoryId
-      );
+      query += `?category=${filters.categoryId}`
     }
 
-    if (filters.userId !== 0) {
-      filteredResults = filteredResults.filter(
-        (post) => post.user_id === filters.userId
-      );
+    if (filters.authorId !== 0) {
+      if (query !== '') {
+        query += `&author=${filters.authorId}`
+      }
+      else {
+        query += `?author=${filters.authorId}`
+      }
     }
 
     if (filters.title.trim() !== "") {
-      filteredResults = filteredResults.filter((post) =>
-        post.title.toLowerCase().includes(titleInput.toLowerCase())
-      );
+      if (query !== '') {
+        query += `&title=${filters.title}`
+      }
+      else {
+        query += `?title=${filters.title}`
+      }
     }
 
     if (filters.tagId !== 0) {
-      getPostsByTag(filters.tagId).then((posts) => setFilteredPosts(posts));
+      if (query !== '') {
+        query += `&tag=${filters.tagId}`
+      }
+      else {
+        query += `?tag=${filters.tagId}`
+      }
     }
-
+    const filteredResults = await getFilteredPosts(query)
     setFilteredPosts(filteredResults);
   };
 
@@ -81,8 +83,8 @@ export const PostList = () => {
   };
 
   const handleAuthorChange = (event) => {
-    const userId = parseInt(event.target.value);
-    setFilters({ ...filters, userId });
+    const authorId = parseInt(event.target.value);
+    setFilters({ ...filters, authorId });
   };
 
   const handleTagChange = (event) => {
@@ -98,17 +100,24 @@ export const PostList = () => {
     setFilters({ ...filters, title: titleInput }); // Update the title filter
   };
 
-  const handleApproveClick = async(currentPost) => {
+  const handleTitleEnter = (event) => {
+    if (event.key === 'Enter') {
+      handleTitleSubmit()
+      event.preventDefault()
+    }
+  }
+
+  const handleApproveClick = async (currentPost) => {
     const copy = [...posts]
     let selectedPost = copy.find(post => post.id === currentPost.id)
-    const editedPost = {...selectedPost}
+    const editedPost = { ...selectedPost }
     editedPost.approved = !currentPost.approved
     const selectedTags = [...selectedPost.tags]
     editedPost.tags = selectedTags.map(tag => tag.id)
     editedPost.category = editedPost.category.id
     editedPost.author = editedPost.author.id
     await putPost(currentPost.id, editedPost)
-    retrievePosts()
+    applyFilters()
   }
 
   return (
@@ -143,7 +152,7 @@ export const PostList = () => {
           ))}
         </select>
         <div>
-          <input type="text" value={titleInput} onChange={handleTitleChange} />
+          <input type="text" value={titleInput} onChange={handleTitleChange} onKeyDown={handleTitleEnter} />
           <button onClick={handleTitleSubmit}>Search</button>
         </div>
       </div>
@@ -188,17 +197,17 @@ export const PostList = () => {
               </div>
               {currentUser[0].is_staff
                 ? <>
-                 <div>
-                            <label>
-                              Approved
-                                <input
-                                    type="checkbox"
-                                    value={post.approved}
-                                    checked={post.approved}
-                                    onChange={() => handleApproveClick(post)}
-                                />
-                            </label>
-                        </div>
+                  <div>
+                    <label>
+                      Approved
+                      <input
+                        type="checkbox"
+                        value={post.approved}
+                        checked={post.approved}
+                        onChange={() => handleApproveClick(post)}
+                      />
+                    </label>
+                  </div>
                 </>
                 : ""}
             </section>
