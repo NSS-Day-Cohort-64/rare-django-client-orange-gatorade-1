@@ -55,12 +55,19 @@ For styling, the team implemented libraries from the [Bulma](https://bulma.io/do
     - [Ryan](https://github.com/ryanmphill)
 
 
-<!-- TODO: Finish writing the readme -->
+## Rare-Publishing Preview
+#### Login
 ![Logging into the app](public/screencaptures/Login.gif)
+#### Filtering Posts
 ![Filtering posts based on category, tag, author, and title](public/screencaptures/FilterPosts.gif)
+#### Managing Post Categories
 ![A list of categories and the creating, editing, and deleting of them ](public/screencaptures/Categories.gif)
+#### Creating a Post and Editing Tags
 ![Creating a post and changing the tags on it after the fact](public/screencaptures/CreatePost.gif)
+#### Subscribing to Authors
 ![Subscribe to authors you want to see on your home page and unsubscribe if you feel they are no longer for you](public/screencaptures/Subscribe.gif)
+
+## Contributions
 
 Primary contributors for Rare-Publishing are [Belle](https://github.com/bellehollander), [Lance](https://github.com/LanceBuckley), and [Ryan](https://github.com/ryanmphill). If you have any suggestions or ideas you would like to see implemented, or if you find any bugs, please open an issue first or contact us
 so that we can discuss what you would like to see changed.
