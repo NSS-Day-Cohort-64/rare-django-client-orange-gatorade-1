@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   getFilteredPosts,
-  getPosts,
   putPost,
 } from "../../managers/posts";
 import { getActiveAuthors, getAllAuthors, getCurrentAuthor } from "../../managers/users";
