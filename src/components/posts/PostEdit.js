@@ -20,7 +20,14 @@ export const PostEdit = () => {
         label: ""
     })
 
-    const [post, updatePost] = useState({})
+    const [post, updatePost] = useState({
+        title: "",
+        category: 0, 
+        image_url: "",
+        content: "",
+        author: 0,
+        tags: []
+    });
     const [postFetched, updatePostFetched] = useState(false)
 
     const { postId } = useParams()
