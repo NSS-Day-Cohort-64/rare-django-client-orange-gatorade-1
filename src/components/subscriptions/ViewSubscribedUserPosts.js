@@ -22,11 +22,12 @@ export const SubscribedUserPosts = ({ token }) => {
     }, [currentUser]);
 
     const fetchSubscribedPosts = async () => {
-        const followedAuthors = await getMySubscriptions(currentUser)
+        const query = `?follower=${currentUser[0].id}&subscribed`
+        const followedAuthors = await getMySubscriptions(query)
 
         const myFeed = [...subscribedPosts]
         for (const author of followedAuthors) {
-            const posts = await getPostsByAuthor(author.id)
+            const posts = await getPostsByAuthor(author.author)
             for (const post of posts) {
                 myFeed.push(post)
             }
@@ -50,7 +51,7 @@ export const SubscribedUserPosts = ({ token }) => {
                                 src={post.image_url}
                             />
                             <p>Title: {post.title}</p>
-                            <p>Category: {post.category.label}</p>
+                            <p>Category: {post.category?.label}</p>
                             <p>Publication Date: {post.publication_date}</p>
                         </li>
                     ))}
