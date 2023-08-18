@@ -3,7 +3,7 @@ import {
   getFilteredPosts,
   putPost,
 } from "../../managers/posts";
-import { getAllAuthors, getCurrentAuthor } from "../../managers/users";
+import { getActiveAuthors, getAllAuthors, getCurrentAuthor } from "../../managers/users";
 import { getCategories } from "../../managers/categories";
 import { Link } from "react-router-dom";
 import { getTags } from "../../managers/TagManager";
@@ -30,7 +30,7 @@ export const PostList = () => {
 
   useEffect(() => {
     applyFilters()
-    getAllAuthors().then((usersData) => setUsers(usersData));
+    getActiveAuthors().then((usersData) => setUsers(usersData));
     getCategories().then((categoriesData) => setCategories(categoriesData));
     getTags().then((tagData) => setTags(tagData));
   }, []);
@@ -107,7 +107,7 @@ export const PostList = () => {
   }
 
   const handleApproveClick = async (currentPost) => {
-    const copy = [...posts]
+    const copy = [...filteredPosts]
     let selectedPost = copy.find(post => post.id === currentPost.id)
     const editedPost = { ...selectedPost }
     editedPost.approved = !currentPost.approved

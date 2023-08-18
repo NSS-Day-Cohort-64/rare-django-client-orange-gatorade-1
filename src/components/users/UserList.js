@@ -1,35 +1,73 @@
 import { Link } from "react-router-dom";
-import { getAllAuthors } from "../../managers/users";
-import { useEffect, useState } from "react";
-import { getCurrentAuthor } from "../../managers/users";
+import { getActiveAuthors, getAllAuthors, getDeactivatedAuthors } from "../../managers/users"
+import { useEffect, useState } from 'react';
+import { activateUser, deactivateUser } from "../../managers/AdminManager";
+import { DeactivateButton } from "./DeactivateUser";
 import { UserEditForm } from "./UserEditForm";
 
-export const UserList = ({ token }) => {
+export const UserList = ({isAdmin}) => {
   const [users, setUsers] = useState([]);
   const [showEditForm, setShowEditForm] = useState(null);
-  const [currentAuthor, setCurrentAuthor] = useState({});
+  const [authorsToDisplay, setAuthorsToDisplay] = useState('active')
 
-  useEffect(() => {
-    getAllAuthors().then((userArray) => setUsers(userArray));
-  }, []);
+  useEffect(
+    () => {
+      if (authorsToDisplay === 'active') {
+        getActiveAuthors().then(userArray => setUsers(userArray));
+      }
+      if (authorsToDisplay === 'deactivated') {
+        getDeactivatedAuthors().then(userArray => setUsers(userArray));
+      }
+    },
+    [authorsToDisplay]
+  )
+
+  const handleActiveChange = (evt) => {
+    const activeState = evt.target.value
+    setAuthorsToDisplay(activeState)
+  }
 
   const openEditForm = (userId) => {
     setShowEditForm(userId);
   };
 
-  useEffect(() => {
-    getCurrentAuthor(token).then((author) => {
-      setCurrentAuthor(author[0]);
-    });
-  }, [token]);
-
   const refreshPage = () => {
-    getAllAuthors().then((userArray) => setUsers(userArray));
+    if (authorsToDisplay === 'active') {
+      getActiveAuthors().then(userArray => setUsers(userArray));
+    }
+    if (authorsToDisplay === 'deactivated') {
+      getDeactivatedAuthors().then(userArray => setUsers(userArray));
+    }
   };
+
+  const handleReactivateAcct = (e, accountId) => {
+    e.preventDefault()
+    activateUser(accountId).then(() => {
+      // Trigger useEffect and re-render author list
+      getDeactivatedAuthors().then(userArray => setUsers(userArray));
+    })
+  }
+
+
 
   return (
     <>
       <h2 className="userList py-1 ml-3">List of Users</h2>
+
+      {
+        isAdmin && 
+        <>
+          <label htmlFor="filterByUser">View Active or Inactive Users</label>
+          <select
+            name="activeStatusSelect"
+            className="form-control"
+            onChange={(e) => { handleActiveChange(e) }}
+          >
+            <option value={'active'}>View Active</option>
+            <option value={'deactivated'}>View Deactivated</option>
+          </select>
+        </>
+      }
 
       <article className="users pt-1 pb-5">
         {users
@@ -44,10 +82,8 @@ export const UserList = ({ token }) => {
                 </Link>
               </div>
               <div className="userEmail">Email: {user.email} </div>
-              <div className="userType">
-                User Type: {user.is_staff ? "Admin" : "Author"}{" "}
-              </div>
-              {currentAuthor.is_staff && (
+              <div className="userType">User Type: {user.is_staff ? "Admin" : "Author"} </div>
+              {isAdmin && (
                 <div className="is-flex">
                   <button
                     className="button is-small is-primary ml-2"
@@ -64,6 +100,16 @@ export const UserList = ({ token }) => {
                   )}
                 </div>
               )}
+              {
+                isAdmin && user.is_active &&
+                <DeactivateButton accountId={user.id} setUsers={setUsers} />
+              }
+              {
+                isAdmin && !user.is_active &&
+                <button
+                  onClick={(click) => { handleReactivateAcct(click, user.id) }}
+                >Reactivate</button>
+              }
             </section>
           ))}
       </article>
