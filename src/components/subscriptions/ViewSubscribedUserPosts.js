@@ -51,7 +51,7 @@ export const SubscribedUserPosts = ({ token }) => {
                                 src={post.image_url}
                             />
                             <p>Title: {post.title}</p>
-                            <p>Category: {post.category.label}</p>
+                            <p>Category: {post.category?.label}</p>
                             <p>Publication Date: {post.publication_date}</p>
                         </li>
                     ))}
