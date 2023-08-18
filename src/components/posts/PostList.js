@@ -108,7 +108,7 @@ export const PostList = () => {
   }
 
   const handleApproveClick = async (currentPost) => {
-    const copy = [...posts]
+    const copy = [...filteredPosts]
     let selectedPost = copy.find(post => post.id === currentPost.id)
     const editedPost = { ...selectedPost }
     editedPost.approved = !currentPost.approved
